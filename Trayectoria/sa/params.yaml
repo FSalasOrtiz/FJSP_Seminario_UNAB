@@ -1,0 +1,44 @@
+# Parámetros de Simulated Annealing para el FJSP.
+#
+# Cada valor necesita justificación. "Valor por defecto de la literatura" es
+# justificación válida si se cita la fuente. "Funcionó bien" no lo es.
+
+nombre: sa
+version: "1.0.0"
+
+parametros:
+  temperatura_inicial:
+    valor: 100.0
+    rango_explorado: [50.0, 500.0]
+    justificacion: >
+      Kirkpatrick, Gelatt & Vecchi (1983) proponen partir de una
+      temperatura que acepte la mayoría de los movimientos al inicio.
+      100.0 se calibró preliminarmente sobre Mk01-Mk03 para que la tasa de
+      aceptación inicial ronde 80-90%; falta calibración formal con Optuna
+      (Parte 7.2 del documento de contexto) sobre el conjunto de
+      calibración, no sobre el de evaluación.
+
+  temperatura_minima:
+    valor: 0.001
+    rango_explorado: [0.0001, 0.01]
+    justificacion: >
+      Umbral de "temperatura efectivamente cero" para el enfriamiento
+      geométrico T(f) = t0 * (t_min/t0)^f. Convencional en la literatura de
+      SA; no es sensible en este rango porque el presupuesto se agota antes
+      de que la temperatura decaiga por debajo de este valor en instancias
+      medianas o grandes.
+
+  prob_movimiento_ms:
+    valor: 0.3
+    rango_explorado: [0.1, 0.5]
+    justificacion: >
+      Fracción de vecinos generados moviendo la asignación de máquina (MS)
+      en vez de la secuencia (OS). Se pondera hacia OS (0.7) porque el
+      espacio de secuencias es más grande y porque el swap en OS siempre
+      produce un vecino distinto, mientras que el movimiento MS puede ser
+      un no-op en operaciones sin flexibilidad (instancias sdata/edata).
+      Valor preliminar; pendiente de calibración formal.
+
+# NOTA: estos tres valores son preliminares (Fase 2). La calibración final
+# con Optuna se hace en la Fase 4, sobre un conjunto de instancias distinto
+# al de evaluación (ver Parte 7.2 del documento de contexto del proyecto).

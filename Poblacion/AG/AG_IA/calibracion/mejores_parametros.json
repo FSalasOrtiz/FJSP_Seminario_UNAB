@@ -1,0 +1,29 @@
+{
+  "gap_promedio_calibracion_pct": 10.773447616063681,
+  "instancias_calibracion": [
+    "ft06_edata",
+    "la01_edata",
+    "la21_edata",
+    "mk01",
+    "mk07",
+    "mk10",
+    "mk15",
+    "abz7_edata",
+    "dpp01a",
+    "dpp10a"
+  ],
+  "semillas_calibracion": [
+    1000,
+    2000
+  ],
+  "generaciones_por_trial": 60,
+  "n_trials": 40,
+  "tam_poblacion": 150,
+  "prob_cruce": 0.9365471892068432,
+  "prob_mut_os": 0.34125353500427524,
+  "prob_mut_ms": 0.2504363714218985,
+  "k_torneo": 3,
+  "elitismo": 1,
+  "estancamiento_max": 20,
+  "frac_inmigrantes": 0.10013839299243679
+}

@@ -1,0 +1,48 @@
+# Parámetros de Búsqueda Tabú (Tabu Search).
+#
+# Cada valor necesita justificación. "Valor por defecto de la literatura" es
+# justificación válida si se cita la fuente. "Funcionó bien" no lo es.
+
+nombre: tabu
+version: "1.0.0"
+
+parametros:
+  max_vecinos:
+    valor: 40
+    rango_explorado: [20, 100]
+    justificacion: >
+      Tope de vecinos evaluados por iteración antes de muestrear (heredado de
+      la versión anterior, taboo_search.py, que usaba 300 con presupuesto en
+      segundos). Se bajó a 40 porque aquí cada evaluación de vecino consume
+      presupuesto real (D8): con 300 vecinos por iteración, una instancia
+      pequeña (50 000 evaluaciones) se agota en ~165 iteraciones externas,
+      dejando muy poco margen para que la búsqueda progrese. Pendiente de
+      calibrar junto con D3 (config/presupuestos.yaml) una vez definido el
+      subconjunto de instancias.
+
+  iter_sin_mejora_diversif:
+    valor: 40
+    rango_explorado: [20, 80]
+    justificacion: "Valor de la versión anterior (taboo_search.py); no se ha recalibrado."
+
+  intentos_inicial:
+    valor: 5
+    rango_explorado: [3, 10]
+    justificacion: >
+      La versión anterior usaba 8 intentos de arranque múltiple. Se bajó a 5
+      porque aquí cada intento consume una evaluación real del presupuesto
+      (D8), y antes el costo de un arranque no competía con el presupuesto
+      de búsqueda.
+
+  tenencia_min:
+    valor: null
+    rango_explorado: null
+    justificacion: >
+      Si es null, se calcula como max(5, round(sqrt(total_ops))), igual que
+      en la versión anterior (heurística habitual ~sqrt(n) del tamaño del
+      problema). Se deja overridable por instancia si la calibración lo pide.
+
+  tenencia_max_extra:
+    valor: 6
+    rango_explorado: [4, 10]
+    justificacion: "Valor de la versión anterior (tenencia_max = tenencia_min + 6)."

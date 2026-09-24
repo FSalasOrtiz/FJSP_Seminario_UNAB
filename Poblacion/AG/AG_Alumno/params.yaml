@@ -1,0 +1,66 @@
+# Parámetros de AG_Alumno (Algoritmo Genético, implementación propia, sin apoyo de IA).
+#
+# Calibrados con Optuna (TPE, 40 trials) — ver calibracion/calibrar_optuna.py
+# y calibracion/mejores_parametros.json. Misma metodología que AG_IA (mismas
+# 10 instancias de calibración, mismas 2 semillas, mismo presupuesto de 60
+# generaciones/corrida) para que ambas implementaciones se calibren en
+# igualdad de condiciones. Mejor gap % promedio de calibración: 31.07%
+# (bastante más alto que el 10.77% de AG_IA — ver limitaciones más abajo).
+#
+# NOTA: esta implementación usa DEAP (algorithms.eaSimple-like) con un
+# cromosoma único (no separa OS/MS como AG_IA) y sin mecanismo de
+# inmigrantes ni elitismo explícito más allá del HallOfFame(1) de DEAP —
+# por eso expone menos hiperparámetros que AG_IA. No se inventaron
+# parámetros que no existen en el diseño real.
+
+implementacion: AG_Alumno
+version: "1.0.0"
+
+parametros:
+  tam_poblacion:
+    valor: 124
+    rango_sugerido: [40, 150]
+    justificacion: >
+      Calibrado con Optuna (ver calibracion/). Mismo rango de búsqueda que
+      AG_IA a propósito, para no darle de entrada más margen de población
+      a una implementación que a la otra.
+
+  prob_cruce:
+    valor: 0.6402887255034884
+    rango_sugerido: [0.2, 0.95]
+    justificacion: >
+      Calibrado con Optuna (ver calibracion/). Probabilidad de aplicar
+      cxTwoPoint (DEAP) a un par de padres seleccionados por torneo.
+
+  prob_mutacion:
+    valor: 0.269123507554864
+    rango_sugerido: [0.05, 0.5]
+    justificacion: >
+      Calibrado con Optuna (ver calibracion/). Probabilidad de aplicar el
+      operador de mutación (mutShuffleIndexes + reasignación de máquina)
+      a un individuo de la descendencia.
+
+  tournsize:
+    valor: 4
+    rango_sugerido: [2, 7]
+    justificacion: "Calibrado con Optuna (ver calibracion/). Tamaño del torneo de selección (tools.selTournament)."
+
+criterio_de_parada: >
+  Número máximo de generaciones (--generaciones), con un límite de tiempo
+  opcional adicional (--tiempo-limite). Igual que AG_IA, es independiente
+  de core/ y define su propio criterio de parada.
+
+limitaciones_conocidas: >
+  El gap % de calibración (31.07%) quedó muy por encima del de AG_IA
+  (10.77%) sobre el mismo subconjunto de instancias, semillas y
+  presupuesto de generaciones por trial. La causa más probable no es la
+  calibración en sí sino el decodificador (decode_schedule): usa una
+  búsqueda lineal (`next(x for x in schedule if x["operation_id"] ==
+  previous_operation_id)`) dentro de un bucle `while unscheduled`, lo que
+  lo hace sensiblemente más lento por generación que el decodificador de
+  AG_IA (inserción en huecos) en instancias grandes — con el mismo
+  presupuesto de generaciones, este AG explora menos "calidad de
+  decodificación por segundo". Esto es una observación sobre el
+  desempeño relativo de ambas implementaciones, exactamente el tipo de
+  hallazgo que el experimento humano-vs-IA busca medir — no se modificó
+  la lógica del algoritmo para "corregirlo".

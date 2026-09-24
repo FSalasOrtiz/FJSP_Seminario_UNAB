@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+ENV/
+
+# Testing / cobertura
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*~
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Resultados intermedios (los crudos SI se versionan)
+results/tmp/
+*.log
+
+# NO ignorar: results/raw/ ni results/tables/ son entregables
+
+# Carpetas de corridas individuales (contrato Salida/dd_mm_aaaa_hh_mm_ss/):
+# son artefactos generados, no código fuente. results/raw/*.csv (el
+# agregado estadístico) SÍ se versiona -- ver la regla de arriba.
+**/Salida/*/
+!**/Salida/.gitkeep

@@ -1,0 +1,56 @@
+# Parámetros de ACO_IA (MAX-MIN Ant System, implementación con apoyo de Claude).
+#
+# Valores por defecto — sin calibrar con Optuna todavía. Cada valor
+# necesita justificación: "funcionó bien" no es justificación válida.
+
+implementacion: ACO_IA
+version: "1.0.0"
+
+parametros:
+  n_ants:
+    valor: 30
+    rango_sugerido: [15, 60]
+    justificacion: >
+      Cantidad de hormigas por iteración. Valor convencional en la
+      literatura de ACO (Dorigo & Stützle, 2004). Construir una hormiga es
+      barato (solo recorre candidatas y decide con la regla de
+      transición); el costo real está en decodificar cada una.
+
+  alpha:
+    valor: 1.0
+    rango_sugerido: [0.5, 2.0]
+    justificacion: "Peso de la feromona en la regla de transición. Valor convencional (Dorigo & Stützle, 2004)."
+
+  beta:
+    valor: 2.0
+    rango_sugerido: [1.0, 5.0]
+    justificacion: "Peso de la heurística (eta = 1/duración) frente a la feromona. Valor convencional."
+
+  rho:
+    valor: 0.1
+    rango_sugerido: [0.05, 0.3]
+    justificacion: "Tasa de evaporación de feromona; valor convencional en MMAS."
+
+  q0:
+    valor: 0.0
+    rango_sugerido: [0.0, 0.5]
+    justificacion: >
+      Probabilidad de explotación pura (elegir siempre la mejor candidata
+      en vez de ruleta probabilística). 0.0 = siempre ruleta. Candidato
+      natural para calibrar con Optuna.
+
+  local_search:
+    valor: true
+    rango_sugerido: null
+    justificacion: >
+      Búsqueda local (primera-mejora sobre la asignación de máquina) cada
+      vez que una hormiga mejora el óptimo global. Cuidado: cada paso
+      consume una decodificación completa adicional, puede ser costoso en
+      instancias grandes — desactivar con --sin-busqueda-local si hace
+      falta.
+
+criterio_de_parada: >
+  Número máximo de iteraciones (--iteraciones), con un límite de tiempo
+  opcional adicional (--tiempo-limite). Igual que AG_IA, independiente del
+  criterio en evaluaciones (D8) que usa el ACO del experimento principal en
+  core/.

@@ -1,0 +1,58 @@
+# Parámetros de PSO_IA (Particle Swarm Optimization, implementación con
+# apoyo de Claude).
+#
+# Valores por defecto — sin calibrar con Optuna todavía. Cada valor
+# necesita justificación: "funcionó bien" no es justificación válida.
+
+implementacion: PSO_IA
+version: "1.0.0"
+
+parametros:
+  n_particulas:
+    valor: 30
+    rango_sugerido: [15, 60]
+    justificacion: >
+      Tamaño de enjambre convencional en la literatura de PSO. Cada
+      partícula cuesta una decodificación completa por iteración.
+
+  w_max:
+    valor: 0.9
+    rango_sugerido: [0.7, 1.0]
+    justificacion: >
+      Peso de inercia al inicio de la búsqueda (favorece exploración).
+      Esquema de inercia decreciente lineal (w_max -> w_min a lo largo de
+      las iteraciones), convencional desde Shi & Eberhart (1998), A
+      modified particle swarm optimizer.
+
+  w_min:
+    valor: 0.4
+    rango_sugerido: [0.2, 0.5]
+    justificacion: "Peso de inercia al final de la búsqueda (favorece explotación). Ver w_max."
+
+  c1:
+    valor: 1.5
+    rango_sugerido: [1.0, 2.5]
+    justificacion: >
+      Coeficiente cognitivo (atracción hacia el mejor personal de la
+      partícula). Valor convencional (suma c1+c2 cercana a 4, regla
+      empírica habitual en PSO clásico).
+
+  c2:
+    valor: 1.5
+    rango_sugerido: [1.0, 2.5]
+    justificacion: "Coeficiente social (atracción hacia el mejor global del enjambre). Ver c1."
+
+criterio_de_parada: >
+  Número máximo de iteraciones (--iteraciones), con un límite de tiempo
+  opcional adicional (--tiempo-limite). Igual que AG_IA y ACO_IA,
+  independiente del criterio en evaluaciones (D8) del experimento
+  principal en core/.
+
+nota_de_codificacion: >
+  A diferencia de AG_IA y ACO_IA (que trabajan directamente sobre
+  representaciones discretas), PSO_IA codifica cada partícula como dos
+  vectores continuos (posición/velocidad) y los traduce a una solución
+  discreta (OS, MS) recién al evaluar — ver la sección 4 de README.md.
+  Esto significa que, a diferencia de los otros dos, PSO_IA no tiene
+  parámetros de mutación/cruce: toda su dinámica de búsqueda está en la
+  actualización de velocidad.

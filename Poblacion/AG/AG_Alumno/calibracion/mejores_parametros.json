@@ -1,0 +1,25 @@
+{
+  "gap_promedio_calibracion_pct": 31.070792982892357,
+  "instancias_calibracion": [
+    "ft06_edata",
+    "la01_edata",
+    "la21_edata",
+    "mk01",
+    "mk07",
+    "mk10",
+    "mk15",
+    "abz7_edata",
+    "dpp01a",
+    "dpp10a"
+  ],
+  "semillas_calibracion": [
+    1000,
+    2000
+  ],
+  "generaciones_por_trial": 60,
+  "n_trials": 40,
+  "tam_poblacion": 124,
+  "prob_cruce": 0.6402887255034884,
+  "prob_mutacion": 0.269123507554864,
+  "tournsize": 4
+}

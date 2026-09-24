@@ -1,0 +1,2081 @@
+{
+  "abz5_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1167,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 1167
+  },
+  "abz5_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 954,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 954
+  },
+  "abz5_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1234,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 1234
+  },
+  "abz5_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 859,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 859
+  },
+  "abz6_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 925,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 925
+  },
+  "abz6_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 807,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 807
+  },
+  "abz6_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 943,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 943
+  },
+  "abz6_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 742,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 742
+  },
+  "abz7_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 604,
+    "size": "20 x 15",
+    "status": "open",
+    "upper_bound": 610
+  },
+  "abz7_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 497,
+    "size": "20 x 15",
+    "status": "open",
+    "upper_bound": 522
+  },
+  "abz7_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 656,
+    "size": "20 x 15",
+    "status": "closed",
+    "upper_bound": 656
+  },
+  "abz7_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 492,
+    "size": "20 x 15",
+    "status": "closed",
+    "upper_bound": 492
+  },
+  "abz8_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 625,
+    "size": "20 x 15",
+    "status": "open",
+    "upper_bound": 636
+  },
+  "abz8_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 509,
+    "size": "20 x 15",
+    "status": "open",
+    "upper_bound": 535
+  },
+  "abz8_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 667,
+    "size": "20 x 15",
+    "status": "closed",
+    "upper_bound": 667
+  },
+  "abz8_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 506,
+    "size": "20 x 15",
+    "status": "open",
+    "upper_bound": 507
+  },
+  "abz9_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 644,
+    "size": "20 x 15",
+    "status": "closed",
+    "upper_bound": 644
+  },
+  "abz9_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 517,
+    "size": "20 x 15",
+    "status": "open",
+    "upper_bound": 536
+  },
+  "abz9_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 678,
+    "size": "20 x 15",
+    "status": "closed",
+    "upper_bound": 678
+  },
+  "abz9_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 497,
+    "size": "20 x 15",
+    "status": "closed",
+    "upper_bound": 497
+  },
+  "car1_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 6176,
+    "size": "11 x 5",
+    "status": "closed",
+    "upper_bound": 6176
+  },
+  "car1_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 5034,
+    "size": "11 x 5",
+    "status": "closed",
+    "upper_bound": 5034
+  },
+  "car1_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 7038,
+    "size": "11 x 5",
+    "status": "closed",
+    "upper_bound": 7038
+  },
+  "car1_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 5005,
+    "size": "11 x 5",
+    "status": "closed",
+    "upper_bound": 5005
+  },
+  "car2_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 6327,
+    "size": "13 x 4",
+    "status": "closed",
+    "upper_bound": 6327
+  },
+  "car2_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 5985,
+    "size": "13 x 4",
+    "status": "closed",
+    "upper_bound": 5985
+  },
+  "car2_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 7166,
+    "size": "13 x 4",
+    "status": "closed",
+    "upper_bound": 7166
+  },
+  "car2_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 5929,
+    "size": "13 x 4",
+    "status": "closed",
+    "upper_bound": 5929
+  },
+  "car3_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 6856,
+    "size": "12 x 5",
+    "status": "closed",
+    "upper_bound": 6856
+  },
+  "car3_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 5622,
+    "size": "12 x 5",
+    "status": "closed",
+    "upper_bound": 5622
+  },
+  "car3_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 7312,
+    "size": "12 x 5",
+    "status": "closed",
+    "upper_bound": 7312
+  },
+  "car3_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 5597,
+    "size": "12 x 5",
+    "status": "closed",
+    "upper_bound": 5597
+  },
+  "car4_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 7789,
+    "size": "14 x 4",
+    "status": "closed",
+    "upper_bound": 7789
+  },
+  "car4_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 6514,
+    "size": "14 x 4",
+    "status": "closed",
+    "upper_bound": 6514
+  },
+  "car4_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 8003,
+    "size": "14 x 4",
+    "status": "closed",
+    "upper_bound": 8003
+  },
+  "car4_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 6514,
+    "size": "14 x 4",
+    "status": "closed",
+    "upper_bound": 6514
+  },
+  "car5_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 7229,
+    "size": "10 x 6",
+    "status": "closed",
+    "upper_bound": 7229
+  },
+  "car5_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 5615,
+    "size": "10 x 6",
+    "status": "closed",
+    "upper_bound": 5615
+  },
+  "car5_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 7702,
+    "size": "10 x 6",
+    "status": "closed",
+    "upper_bound": 7702
+  },
+  "car5_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 4909,
+    "size": "10 x 6",
+    "status": "closed",
+    "upper_bound": 4909
+  },
+  "car6_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 7990,
+    "size": "8 x 9",
+    "status": "closed",
+    "upper_bound": 7990
+  },
+  "car6_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 6147,
+    "size": "8 x 9",
+    "status": "closed",
+    "upper_bound": 6147
+  },
+  "car6_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 8313,
+    "size": "8 x 9",
+    "status": "closed",
+    "upper_bound": 8313
+  },
+  "car6_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 5486,
+    "size": "8 x 9",
+    "status": "closed",
+    "upper_bound": 5486
+  },
+  "car7_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 6123,
+    "size": "7 x 7",
+    "status": "closed",
+    "upper_bound": 6123
+  },
+  "car7_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 4425,
+    "size": "7 x 7",
+    "status": "closed",
+    "upper_bound": 4425
+  },
+  "car7_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 6558,
+    "size": "7 x 7",
+    "status": "closed",
+    "upper_bound": 6558
+  },
+  "car7_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 4281,
+    "size": "7 x 7",
+    "status": "closed",
+    "upper_bound": 4281
+  },
+  "car8_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 7689,
+    "size": "8 x 8",
+    "status": "closed",
+    "upper_bound": 7689
+  },
+  "car8_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 5692,
+    "size": "8 x 8",
+    "status": "closed",
+    "upper_bound": 5692
+  },
+  "car8_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 8264,
+    "size": "8 x 8",
+    "status": "closed",
+    "upper_bound": 8264
+  },
+  "car8_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 4613,
+    "size": "8 x 8",
+    "status": "closed",
+    "upper_bound": 4613
+  },
+  "dpp01a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 2505,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 2505
+  },
+  "dpp02a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 2228,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 2228
+  },
+  "dpp03a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 2228,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 2228
+  },
+  "dpp04a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 2503,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 2503
+  },
+  "dpp05a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 2195,
+    "size": "10 x 5",
+    "status": "open",
+    "upper_bound": 2199
+  },
+  "dpp06a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 2164,
+    "size": "10 x 5",
+    "status": "open",
+    "upper_bound": 2169
+  },
+  "dpp07a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 2216,
+    "size": "15 x 8",
+    "status": "open",
+    "upper_bound": 2254
+  },
+  "dpp08a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 2061,
+    "size": "15 x 8",
+    "status": "closed",
+    "upper_bound": 2061
+  },
+  "dpp09a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 2061,
+    "size": "15 x 8",
+    "status": "closed",
+    "upper_bound": 2061
+  },
+  "dpp10a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 2212,
+    "size": "15 x 8",
+    "status": "open",
+    "upper_bound": 2241
+  },
+  "dpp11a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 2019,
+    "size": "15 x 8",
+    "status": "open",
+    "upper_bound": 2037
+  },
+  "dpp12a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 1969,
+    "size": "15 x 8",
+    "status": "open",
+    "upper_bound": 1984
+  },
+  "dpp13a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 2206,
+    "size": "20 x 10",
+    "status": "open",
+    "upper_bound": 2236
+  },
+  "dpp14a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 2161,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 2161
+  },
+  "dpp15a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 2161,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 2161
+  },
+  "dpp16a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 2202,
+    "size": "20 x 10",
+    "status": "open",
+    "upper_bound": 2231
+  },
+  "dpp17a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 2089,
+    "size": "20 x 10",
+    "status": "open",
+    "upper_bound": 2105
+  },
+  "dpp18a": {
+    "family": "Dauzère-Pérès and Paulli 1994",
+    "lower_bound": 2057,
+    "size": "20 x 10",
+    "status": "open",
+    "upper_bound": 2070
+  },
+  "ft06_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 55,
+    "size": "6 x 6",
+    "status": "closed",
+    "upper_bound": 55
+  },
+  "ft06_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 47,
+    "size": "6 x 6",
+    "status": "closed",
+    "upper_bound": 47
+  },
+  "ft06_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 55,
+    "size": "6 x 6",
+    "status": "closed",
+    "upper_bound": 55
+  },
+  "ft06_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 47,
+    "size": "6 x 6",
+    "status": "closed",
+    "upper_bound": 47
+  },
+  "ft10_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 871,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 871
+  },
+  "ft10_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 686,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 686
+  },
+  "ft10_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 930,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 930
+  },
+  "ft10_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 655,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 655
+  },
+  "ft20_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1088,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1088
+  },
+  "ft20_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1022,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1022
+  },
+  "ft20_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1165,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1165
+  },
+  "ft20_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1022,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1022
+  },
+  "la01_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 609,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 609
+  },
+  "la01_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 570,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 570
+  },
+  "la01_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 666,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 666
+  },
+  "la01_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 570,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 570
+  },
+  "la02_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 655,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 655
+  },
+  "la02_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 529,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 529
+  },
+  "la02_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 655,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 655
+  },
+  "la02_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 529,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 529
+  },
+  "la03_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 550,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 550
+  },
+  "la03_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 477,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 477
+  },
+  "la03_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 597,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 597
+  },
+  "la03_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 477,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 477
+  },
+  "la04_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 568,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 568
+  },
+  "la04_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 502,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 502
+  },
+  "la04_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 590,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 590
+  },
+  "la04_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 502,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 502
+  },
+  "la05_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 503,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 503
+  },
+  "la05_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 457,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 457
+  },
+  "la05_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 593,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 593
+  },
+  "la05_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 457,
+    "size": "10 x 5",
+    "status": "closed",
+    "upper_bound": 457
+  },
+  "la06_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 833,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 833
+  },
+  "la06_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 799,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 799
+  },
+  "la06_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 926,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 926
+  },
+  "la06_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 799,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 799
+  },
+  "la07_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 762,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 762
+  },
+  "la07_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 749,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 749
+  },
+  "la07_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 890,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 890
+  },
+  "la07_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 749,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 749
+  },
+  "la08_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 845,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 845
+  },
+  "la08_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 765,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 765
+  },
+  "la08_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 863,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 863
+  },
+  "la08_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 765,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 765
+  },
+  "la09_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 878,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 878
+  },
+  "la09_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 853,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 853
+  },
+  "la09_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 951,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 951
+  },
+  "la09_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 853,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 853
+  },
+  "la10_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 866,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 866
+  },
+  "la10_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 804,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 804
+  },
+  "la10_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 958,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 958
+  },
+  "la10_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 804,
+    "size": "15 x 5",
+    "status": "closed",
+    "upper_bound": 804
+  },
+  "la11_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1103,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1103
+  },
+  "la11_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1071,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1071
+  },
+  "la11_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1222,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1222
+  },
+  "la11_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1071,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1071
+  },
+  "la12_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 960,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 960
+  },
+  "la12_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 936,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 936
+  },
+  "la12_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1039,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1039
+  },
+  "la12_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 936,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 936
+  },
+  "la13_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1053,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1053
+  },
+  "la13_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1038,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1038
+  },
+  "la13_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1150,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1150
+  },
+  "la13_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1038,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1038
+  },
+  "la14_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1123,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1123
+  },
+  "la14_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1070,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1070
+  },
+  "la14_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1292,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1292
+  },
+  "la14_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1070,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1070
+  },
+  "la15_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1111,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1111
+  },
+  "la15_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1089,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1089
+  },
+  "la15_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1207,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1207
+  },
+  "la15_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1089,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 1089
+  },
+  "la16_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 892,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 892
+  },
+  "la16_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 717,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 717
+  },
+  "la16_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 945,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 945
+  },
+  "la16_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 717,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 717
+  },
+  "la17_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 707,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 707
+  },
+  "la17_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 646,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 646
+  },
+  "la17_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 784,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 784
+  },
+  "la17_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 646,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 646
+  },
+  "la18_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 842,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 842
+  },
+  "la18_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 666,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 666
+  },
+  "la18_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 848,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 848
+  },
+  "la18_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 663,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 663
+  },
+  "la19_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 796,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 796
+  },
+  "la19_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 700,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 700
+  },
+  "la19_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 842,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 842
+  },
+  "la19_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 617,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 617
+  },
+  "la20_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 857,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 857
+  },
+  "la20_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 756,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 756
+  },
+  "la20_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 902,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 902
+  },
+  "la20_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 756,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 756
+  },
+  "la21_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1009,
+    "size": "15 x 10",
+    "status": "closed",
+    "upper_bound": 1009
+  },
+  "la21_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 809,
+    "size": "15 x 10",
+    "status": "open",
+    "upper_bound": 825
+  },
+  "la21_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1046,
+    "size": "15 x 10",
+    "status": "closed",
+    "upper_bound": 1046
+  },
+  "la21_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 800,
+    "size": "15 x 10",
+    "status": "closed",
+    "upper_bound": 800
+  },
+  "la22_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 880,
+    "size": "15 x 10",
+    "status": "closed",
+    "upper_bound": 880
+  },
+  "la22_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 745,
+    "size": "15 x 10",
+    "status": "open",
+    "upper_bound": 753
+  },
+  "la22_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 927,
+    "size": "15 x 10",
+    "status": "closed",
+    "upper_bound": 927
+  },
+  "la22_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 733,
+    "size": "15 x 10",
+    "status": "closed",
+    "upper_bound": 733
+  },
+  "la23_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 950,
+    "size": "15 x 10",
+    "status": "closed",
+    "upper_bound": 950
+  },
+  "la23_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 820,
+    "size": "15 x 10",
+    "status": "open",
+    "upper_bound": 831
+  },
+  "la23_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1032,
+    "size": "15 x 10",
+    "status": "closed",
+    "upper_bound": 1032
+  },
+  "la23_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 809,
+    "size": "15 x 10",
+    "status": "closed",
+    "upper_bound": 809
+  },
+  "la24_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 908,
+    "size": "15 x 10",
+    "status": "closed",
+    "upper_bound": 908
+  },
+  "la24_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 780,
+    "size": "15 x 10",
+    "status": "open",
+    "upper_bound": 795
+  },
+  "la24_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 935,
+    "size": "15 x 10",
+    "status": "closed",
+    "upper_bound": 935
+  },
+  "la24_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 773,
+    "size": "15 x 10",
+    "status": "closed",
+    "upper_bound": 773
+  },
+  "la25_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 936,
+    "size": "15 x 10",
+    "status": "closed",
+    "upper_bound": 936
+  },
+  "la25_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 771,
+    "size": "15 x 10",
+    "status": "open",
+    "upper_bound": 779
+  },
+  "la25_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 977,
+    "size": "15 x 10",
+    "status": "closed",
+    "upper_bound": 977
+  },
+  "la25_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 751,
+    "size": "15 x 10",
+    "status": "closed",
+    "upper_bound": 751
+  },
+  "la26_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1106,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 1106
+  },
+  "la26_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1056,
+    "size": "20 x 10",
+    "status": "open",
+    "upper_bound": 1057
+  },
+  "la26_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1218,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 1218
+  },
+  "la26_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1052,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 1052
+  },
+  "la27_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1181,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 1181
+  },
+  "la27_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1085,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 1085
+  },
+  "la27_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1235,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 1235
+  },
+  "la27_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1084,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 1084
+  },
+  "la28_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1142,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 1142
+  },
+  "la28_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1075,
+    "size": "20 x 10",
+    "status": "open",
+    "upper_bound": 1076
+  },
+  "la28_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1216,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 1216
+  },
+  "la28_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1069,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 1069
+  },
+  "la29_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1107,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 1107
+  },
+  "la29_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 993,
+    "size": "20 x 10",
+    "status": "open",
+    "upper_bound": 994
+  },
+  "la29_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1152,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 1152
+  },
+  "la29_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 993,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 993
+  },
+  "la30_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1188,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 1188
+  },
+  "la30_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1068,
+    "size": "20 x 10",
+    "status": "open",
+    "upper_bound": 1071
+  },
+  "la30_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1355,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 1355
+  },
+  "la30_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1068,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 1068
+  },
+  "la31_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1532,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1532
+  },
+  "la31_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1520,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1520
+  },
+  "la31_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1784,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1784
+  },
+  "la31_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1520,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1520
+  },
+  "la32_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1698,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1698
+  },
+  "la32_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1657,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1657
+  },
+  "la32_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1850,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1850
+  },
+  "la32_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1657,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1657
+  },
+  "la33_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1547,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1547
+  },
+  "la33_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1497,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1497
+  },
+  "la33_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1719,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1719
+  },
+  "la33_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1497,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1497
+  },
+  "la34_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1599,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1599
+  },
+  "la34_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1535,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1535
+  },
+  "la34_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1721,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1721
+  },
+  "la34_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1535,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1535
+  },
+  "la35_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1736,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1736
+  },
+  "la35_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1549,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1549
+  },
+  "la35_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1888,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1888
+  },
+  "la35_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1549,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 1549
+  },
+  "la36_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1160,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 1160
+  },
+  "la36_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1023,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 1023
+  },
+  "la36_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1268,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 1268
+  },
+  "la36_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 948,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 948
+  },
+  "la37_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1397,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 1397
+  },
+  "la37_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1062,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 1062
+  },
+  "la37_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1397,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 1397
+  },
+  "la37_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 986,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 986
+  },
+  "la38_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1141,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 1141
+  },
+  "la38_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 954,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 954
+  },
+  "la38_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1196,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 1196
+  },
+  "la38_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 943,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 943
+  },
+  "la39_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1184,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 1184
+  },
+  "la39_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1011,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 1011
+  },
+  "la39_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1233,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 1233
+  },
+  "la39_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 922,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 922
+  },
+  "la40_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1144,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 1144
+  },
+  "la40_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 955,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 955
+  },
+  "la40_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1222,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 1222
+  },
+  "la40_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 955,
+    "size": "15 x 15",
+    "status": "closed",
+    "upper_bound": 955
+  },
+  "mk01": {
+    "family": "Brandimarte 1993",
+    "lower_bound": 40,
+    "size": "10 x 6",
+    "status": "closed",
+    "upper_bound": 40
+  },
+  "mk02": {
+    "family": "Brandimarte 1993",
+    "lower_bound": 26,
+    "size": "10 x 6",
+    "status": "closed",
+    "upper_bound": 26
+  },
+  "mk03": {
+    "family": "Brandimarte 1993",
+    "lower_bound": 204,
+    "size": "15 x 8",
+    "status": "closed",
+    "upper_bound": 204
+  },
+  "mk04": {
+    "family": "Brandimarte 1993",
+    "lower_bound": 60,
+    "size": "15 x 8",
+    "status": "closed",
+    "upper_bound": 60
+  },
+  "mk05": {
+    "family": "Brandimarte 1993",
+    "lower_bound": 172,
+    "size": "15 x 4",
+    "status": "closed",
+    "upper_bound": 172
+  },
+  "mk06": {
+    "family": "Brandimarte 1993",
+    "lower_bound": 57,
+    "size": "10 x 15",
+    "status": "closed",
+    "upper_bound": 57
+  },
+  "mk07": {
+    "family": "Brandimarte 1993",
+    "lower_bound": 139,
+    "size": "20 x 5",
+    "status": "closed",
+    "upper_bound": 139
+  },
+  "mk08": {
+    "family": "Brandimarte 1993",
+    "lower_bound": 523,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 523
+  },
+  "mk09": {
+    "family": "Brandimarte 1993",
+    "lower_bound": 307,
+    "size": "20 x 10",
+    "status": "closed",
+    "upper_bound": 307
+  },
+  "mk10": {
+    "family": "Brandimarte 1993",
+    "lower_bound": 189,
+    "size": "20 x 15",
+    "status": "open",
+    "upper_bound": 193
+  },
+  "mk11": {
+    "family": "Brandimarte 1993",
+    "lower_bound": 609,
+    "size": "30 x 5",
+    "status": "closed",
+    "upper_bound": 609
+  },
+  "mk12": {
+    "family": "Brandimarte 1993",
+    "lower_bound": 508,
+    "size": "30 x 10",
+    "status": "closed",
+    "upper_bound": 508
+  },
+  "mk13": {
+    "family": "Brandimarte 1993",
+    "lower_bound": 382,
+    "size": "30 x 10",
+    "status": "open",
+    "upper_bound": 390
+  },
+  "mk14": {
+    "family": "Brandimarte 1993",
+    "lower_bound": 694,
+    "size": "30 x 15",
+    "status": "closed",
+    "upper_bound": 694
+  },
+  "mk15": {
+    "family": "Brandimarte 1993",
+    "lower_bound": 333,
+    "size": "30 x 15",
+    "status": "closed",
+    "upper_bound": 333
+  },
+  "orb10_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 933,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 933
+  },
+  "orb10_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 742,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 742
+  },
+  "orb10_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 944,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 944
+  },
+  "orb10_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 681,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 681
+  },
+  "orb1_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 977,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 977
+  },
+  "orb1_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 746,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 746
+  },
+  "orb1_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1059,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 1059
+  },
+  "orb1_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 695,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 695
+  },
+  "orb2_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 865,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 865
+  },
+  "orb2_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 696,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 696
+  },
+  "orb2_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 888,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 888
+  },
+  "orb2_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 620,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 620
+  },
+  "orb3_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 951,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 951
+  },
+  "orb3_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 712,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 712
+  },
+  "orb3_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1005,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 1005
+  },
+  "orb3_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 648,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 648
+  },
+  "orb4_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 984,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 984
+  },
+  "orb4_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 753,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 753
+  },
+  "orb4_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1005,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 1005
+  },
+  "orb4_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 753,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 753
+  },
+  "orb5_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 842,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 842
+  },
+  "orb5_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 639,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 639
+  },
+  "orb5_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 887,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 887
+  },
+  "orb5_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 584,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 584
+  },
+  "orb6_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 958,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 958
+  },
+  "orb6_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 754,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 754
+  },
+  "orb6_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 1010,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 1010
+  },
+  "orb6_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 715,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 715
+  },
+  "orb7_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 389,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 389
+  },
+  "orb7_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 302,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 302
+  },
+  "orb7_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 397,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 397
+  },
+  "orb7_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 275,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 275
+  },
+  "orb8_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 894,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 894
+  },
+  "orb8_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 639,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 639
+  },
+  "orb8_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 899,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 899
+  },
+  "orb8_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 573,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 573
+  },
+  "orb9_edata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 933,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 933
+  },
+  "orb9_rdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 694,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 694
+  },
+  "orb9_sdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 934,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 934
+  },
+  "orb9_vdata": {
+    "family": "Hurink, Jurisch and Thole 1994",
+    "lower_bound": 659,
+    "size": "10 x 10",
+    "status": "closed",
+    "upper_bound": 659
+  }
+}
