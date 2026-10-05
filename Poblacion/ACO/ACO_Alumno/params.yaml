@@ -1,20 +1,25 @@
-# Parámetros de ACO_IA (MAX-MIN Ant System, implementación con apoyo de Claude).
+# Parámetros de ACO_Alumno (MAX-MIN Ant System, clase ACO_FJSP de algorithm.py).
 #
-# Valores por defecto — sin calibrar con Optuna todavía. Cada valor
-# necesita justificación: "funcionó bien" no es justificación válida.
+# Valores por defecto — sin calibrar con Optuna todavía. Son los valores
+# por defecto del constructor de ACO_FJSP (salvo la semilla, que la fija
+# revision/sanity_check.py). Cada valor necesita justificación: "funcionó
+# bien" no es justificación válida.
+#
+# Rangos sugeridos: mismos que ACO_IA a propósito, para que ambas
+# implementaciones se calibren en igualdad de condiciones. A diferencia de
+# ACO_IA, este diseño no tiene búsqueda local, así que no hay parámetro
+# local_search.
 
-implementacion: ACO_IA
+implementacion: ACO_Alumno
 version: "1.0.0"
 
 parametros:
-  n_ants:
+  n_hormigas:
     valor: 30
     rango_sugerido: [15, 60]
     justificacion: >
-      Cantidad de hormigas por iteración. Valor convencional en la
-      literatura de ACO (Dorigo & Stützle, 2004). Construir una hormiga es
-      barato (solo recorre candidatas y decide con la regla de
-      transición); el costo real está en decodificar cada una.
+      Cantidad de hormigas por iteración (constructor de ACO_FJSP). Valor
+      convencional en la literatura de ACO (Dorigo & Stützle, 2004).
 
   alpha:
     valor: 1.0
@@ -29,28 +34,18 @@ parametros:
   rho:
     valor: 0.1
     rango_sugerido: [0.05, 0.3]
-    justificacion: "Tasa de evaporación de feromona; valor convencional en MMAS."
+    justificacion: >
+      Tasa de evaporación de feromona. También interviene en el cálculo de
+      tau_max = 1 / (rho * mejor_makespan) (Stützle & Hoos, 2000).
 
   q0:
     valor: 0.0
     rango_sugerido: [0.0, 0.5]
     justificacion: >
       Probabilidad de explotación pura (elegir siempre la mejor candidata
-      en vez de ruleta probabilística). 0.0 = siempre ruleta. Candidato
-      natural para calibrar con Optuna.
-
-  local_search:
-    valor: true
-    rango_sugerido: null
-    justificacion: >
-      Búsqueda local (primera-mejora sobre la asignación de máquina) cada
-      vez que una hormiga mejora el óptimo global. Cuidado: cada paso
-      consume una decodificación completa adicional, puede ser costoso en
-      instancias grandes — desactivar con --sin-busqueda-local si hace
-      falta.
+      en vez de ruleta). 0.0 = siempre ruleta.
 
 criterio_de_parada: >
   Número máximo de iteraciones (--iteraciones), con un límite de tiempo
-  opcional adicional (--tiempo-limite). Igual que AG_IA, independiente del
-  criterio en evaluaciones (D8) que usa el ACO del experimento principal en
-  core/.
+  opcional adicional (--tiempo-limite); ambos los acepta
+  ACO_FJSP.resolver(). Independiente de core/.

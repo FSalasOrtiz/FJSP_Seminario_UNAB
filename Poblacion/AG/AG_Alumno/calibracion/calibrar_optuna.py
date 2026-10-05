@@ -18,7 +18,7 @@ DEAP).
 
 Uso
 ---
-    python calibrar_optuna.py
+    python calibrar_optuna.py                      # 100 trials (pedido del profesor guía)
     python calibrar_optuna.py --n-trials 100
 
 El estudio se persiste en calibracion.db (sqlite) — retomable si se corta.
@@ -111,7 +111,7 @@ def construir_objetivo(nombres, bks, semillas, generaciones):
 
 def main():
     ap = argparse.ArgumentParser(description="Calibración de AG_Alumno con Optuna.")
-    ap.add_argument("--n-trials", type=int, default=40)
+    ap.add_argument("--n-trials", type=int, default=100)
     ap.add_argument("--generaciones", type=int, default=60)
     ap.add_argument("--instancias", default=None)
     ap.add_argument("--semillas", default=None)

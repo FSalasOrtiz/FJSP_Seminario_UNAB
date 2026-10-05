@@ -1,58 +1,49 @@
-# Parámetros de PSO_IA (Particle Swarm Optimization, implementación con
-# apoyo de Claude).
+# Parámetros de PSO_Alumno (Particle Swarm Optimization, clase FJSP_PSO de
+# algorithm.py).
 #
-# Valores por defecto — sin calibrar con Optuna todavía. Cada valor
-# necesita justificación: "funcionó bien" no es justificación válida.
+# Valores por defecto — sin calibrar con Optuna todavía. Son los valores
+# del bloque __main__ de algorithm.py (salvo la semilla, que la fija
+# revision/sanity_check.py). Cada valor necesita justificación: "funcionó
+# bien" no es justificación válida.
+#
+# Diferencia de diseño con PSO_IA: este PSO usa UNA inercia inicial
+# (inertia) que se reduce linealmente en 0.3 a lo largo de la corrida
+# (valor fijo en solve()), en vez del par w_max / w_min de PSO_IA.
 
-implementacion: PSO_IA
+implementacion: PSO_Alumno
 version: "1.0.0"
 
 parametros:
-  n_particulas:
-    valor: 30
+  population_size:
+    valor: 40
     rango_sugerido: [15, 60]
     justificacion: >
-      Tamaño de enjambre convencional en la literatura de PSO. Cada
-      partícula cuesta una decodificación completa por iteración.
+      Tamaño del enjambre. Mismo rango que n_particulas de PSO_IA, para no
+      darle de entrada más margen a una implementación que a la otra.
 
-  w_max:
-    valor: 0.9
-    rango_sugerido: [0.7, 1.0]
+  inertia:
+    valor: 0.7
+    rango_sugerido: [0.5, 1.0]
     justificacion: >
-      Peso de inercia al inicio de la búsqueda (favorece exploración).
-      Esquema de inercia decreciente lineal (w_max -> w_min a lo largo de
-      las iteraciones), convencional desde Shi & Eberhart (1998), A
-      modified particle swarm optimizer.
-
-  w_min:
-    valor: 0.4
-    rango_sugerido: [0.2, 0.5]
-    justificacion: "Peso de inercia al final de la búsqueda (favorece explotación). Ver w_max."
+      Inercia al inicio de la búsqueda; solve() la reduce linealmente
+      hasta inertia - 0.3 en la última iteración. El límite inferior del
+      rango (0.5) evita que la inercia final quede cerca de 0 o negativa.
 
   c1:
-    valor: 1.5
+    valor: 1.4
     rango_sugerido: [1.0, 2.5]
-    justificacion: >
-      Coeficiente cognitivo (atracción hacia el mejor personal de la
-      partícula). Valor convencional (suma c1+c2 cercana a 4, regla
-      empírica habitual en PSO clásico).
+    justificacion: "Coeficiente cognitivo (atracción hacia el mejor personal). Mismo rango que PSO_IA."
 
   c2:
-    valor: 1.5
+    valor: 1.4
     rango_sugerido: [1.0, 2.5]
-    justificacion: "Coeficiente social (atracción hacia el mejor global del enjambre). Ver c1."
+    justificacion: "Coeficiente social (atracción hacia el mejor global). Mismo rango que PSO_IA."
 
 criterio_de_parada: >
-  Número máximo de iteraciones (--iteraciones), con un límite de tiempo
-  opcional adicional (--tiempo-limite). Igual que AG_IA y ACO_IA,
-  independiente del criterio en evaluaciones (D8) del experimento
-  principal en core/.
+  Número máximo de iteraciones (--iteraciones). FJSP_PSO.solve() no
+  acepta límite de tiempo. Independiente de core/.
 
-nota_de_codificacion: >
-  A diferencia de AG_IA y ACO_IA (que trabajan directamente sobre
-  representaciones discretas), PSO_IA codifica cada partícula como dos
-  vectores continuos (posición/velocidad) y los traduce a una solución
-  discreta (OS, MS) recién al evaluar — ver la sección 4 de README.md.
-  Esto significa que, a diferencia de los otros dos, PSO_IA no tiene
-  parámetros de mutación/cruce: toda su dinámica de búsqueda está en la
-  actualización de velocidad.
+nota_de_convergencia: >
+  solve() registra el mejor makespan por iteración, sin tiempo; por eso
+  g1.csv / g1.png de esta implementación usan iteración en el eje X, no
+  segundos como AG_IA.

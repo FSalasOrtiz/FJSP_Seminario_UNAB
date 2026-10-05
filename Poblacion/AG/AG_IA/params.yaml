@@ -1,10 +1,10 @@
 # Parámetros de AG_IA (Algoritmo Genético, implementación con apoyo de Claude).
 #
-# Calibrados con Optuna (TPE, 40 trials) — ver calibracion/calibrar_optuna.py
+# Calibrados con Optuna (TPE, 100 trials, desde cero — pedido del profesor guía) — ver calibracion/calibrar_optuna.py
 # y calibracion/mejores_parametros.json. Objetivo minimizado: gap %
 # promedio contra BKS sobre un subconjunto curado de 10 instancias (3
 # familias del benchmark, tamaños 6x6 a 30x15) x 2 semillas x 60
-# generaciones/corrida. Mejor gap promedio de calibración: 10.77%.
+# generaciones/corrida. Mejor gap promedio de calibración: 10.56%.
 # Cada valor necesita justificación: "funcionó bien" no es justificación válida.
 
 implementacion: AG_IA
@@ -12,28 +12,28 @@ version: "1.0.0"
 
 parametros:
   tam_poblacion:
-    valor: 150
+    valor: 145
     rango_sugerido: [40, 150]
     justificacion: >
-      Calibrado con Optuna (ver calibracion/). Terminó en el borde
+      Calibrado con Optuna (ver calibracion/). Quedó cerca del borde
       superior del rango probado — indicio de que el óptimo real podría
-      estar por encima de 150; el rango no se amplió por costo de tiempo
-      (poblaciones más grandes escalan linealmente el costo de cada
-      generación). Limitación conocida: si se recalibra, ampliar primero
-      a algo como [40, 300].
+      estar en 150 o más; el rango no se amplió para mantener la misma
+      búsqueda que la calibración original y que AG_Alumno (poblaciones
+      más grandes escalan linealmente el costo de cada generación).
+      Limitación conocida: si se recalibra, considerar ampliar a [40, 300].
 
   prob_cruce:
-    valor: 0.9365471892068432
+    valor: 0.9437346238518063
     rango_sugerido: [0.7, 0.95]
     justificacion: "Calibrado con Optuna (ver calibracion/) — quedó cerca del borde superior del rango, consistente con la literatura de AG (alta probabilidad de cruce es habitual)."
 
   prob_mut_os:
-    valor: 0.34125353500427524
+    valor: 0.21149488943670075
     rango_sugerido: [0.1, 0.4]
     justificacion: "Calibrado con Optuna (ver calibracion/). Probabilidad de mutar la secuencia (OS) de un hijo recién creado."
 
   prob_mut_ms:
-    valor: 0.2504363714218985
+    valor: 0.2371835771538833
     rango_sugerido: [0.1, 0.5]
     justificacion: "Calibrado con Optuna (ver calibracion/). Probabilidad de mutar la asignación de máquina (MS) de un hijo recién creado."
 
@@ -52,7 +52,7 @@ parametros:
       con este diseño), así que no es evidencia de rango insuficiente.
 
   estancamiento_max:
-    valor: 20
+    valor: 19
     rango_sugerido: [8, 40]
     justificacion: >
       Calibrado con Optuna (ver calibracion/). Generaciones sin mejora
@@ -60,11 +60,11 @@ parametros:
       (mecanismo de diversificación).
 
   frac_inmigrantes:
-    valor: 0.10013839299243679
+    valor: 0.1073237638411569
     rango_sugerido: [0.1, 0.3]
     justificacion: >
-      Calibrado con Optuna (ver calibracion/). Terminó prácticamente en
-      el borde inferior del rango; podría valer la pena probar un rango
+      Calibrado con Optuna (ver calibracion/). Quedó cerca del borde
+      inferior del rango; podría valer la pena probar un rango
       inferior a 0.1 en una recalibración futura.
 
 criterio_de_parada: >

@@ -1,5 +1,5 @@
 {
-  "gap_promedio_calibracion_pct": 27.615820224241784,
+  "gap_promedio_calibracion_pct": 32.74806288068428,
   "instancias_calibracion": [
     "ft06_edata",
     "la01_edata",
@@ -16,10 +16,11 @@
     1000,
     2000
   ],
-  "generaciones_por_trial": 60,
+  "iteraciones_por_trial": 30,
   "n_trials": 100,
-  "tam_poblacion": 150,
-  "prob_cruce": 0.9171184329931649,
-  "prob_mutacion": 0.28183215786911114,
-  "tournsize": 5
+  "n_hormigas": 60,
+  "alpha": 1.3218955994978074,
+  "beta": 1.577346920949439,
+  "rho": 0.22239243946464407,
+  "q0": 0.038208765668296424
 }
