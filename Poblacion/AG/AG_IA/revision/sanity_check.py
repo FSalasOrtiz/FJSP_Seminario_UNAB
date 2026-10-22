@@ -12,13 +12,14 @@ es la base de la comparación IA vs. Alumno.
 
 Uso:
     python sanity_check.py <ruta_instancia.fjs> [opciones]
-    python sanity_check.py ../../../data/instances/mk01.fjs --semilla 1000
+    python sanity_check.py ../Entrada/instances/mk01.fjs --semilla 1000
 
 Ver --help para todas las opciones.
 """
 
 import argparse
 import csv
+from concurrent.futures import ProcessPoolExecutor
 import json
 import os
 import platform
@@ -112,6 +113,78 @@ def escribir_salida(directorio, instancia, ruta_instancia_original, resultado, p
     except ImportError:
         pass  # matplotlib no disponible: el CSV ya queda igual disponible
 
+# =============================================================================
+# CAJA Y BIGOTE — makespan final de varias corridas independientes
+# =============================================================================
+
+def cargar_bks(nombre_instancia):
+    """Upper bound de la instancia según ../Entrada/bks.json (None si no está)."""
+    ruta = os.path.join(os.path.dirname(__file__), "..", "Entrada", "bks.json")
+    try:
+        with open(ruta) as f:
+            bks = json.load(f)
+    except OSError:
+        return None
+    clave = os.path.splitext(nombre_instancia)[0]
+    return bks.get(clave, {}).get("upper_bound")
+
+
+def escribir_caja(directorio, instancia, makespans, implementacion):
+    """g2.csv + g2.png: distribución del makespan final en las corridas
+    independientes (una por semilla)."""
+    with open(os.path.join(directorio, "g2.csv"), "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["semilla", "makespan"])
+        for semilla, mk in makespans.items():
+            w.writerow([semilla, mk])
+
+    if len(makespans) < 2:
+        return
+
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+        valores = list(makespans.values())
+        bks = cargar_bks(instancia.nombre)
+        plt.figure(figsize=(4, 5))
+        plt.boxplot(valores, widths=0.5, showmeans=True)
+        plt.scatter([1 + 0.06 * ((i % 5) - 2) for i in range(len(valores))], valores,
+                    s=14, alpha=0.6, zorder=3)
+        if bks is not None:
+            plt.axhline(bks, linestyle="--", linewidth=1, label=f"BKS = {bks}")
+            plt.legend(loc="best")
+        plt.xticks([1], [f"{len(valores)} corridas"])
+        plt.ylabel("Makespan final")
+        plt.title(f"Caja y bigote — {implementacion}\n{instancia.nombre}")
+        plt.tight_layout()
+        plt.savefig(os.path.join(directorio, "g2.png"), dpi=120)
+        plt.close()
+    except ImportError:
+        pass  # matplotlib no disponible: el CSV ya queda igual disponible
+
+
+# =============================================================================
+# CORRIDA — única parte que depende de la implementación
+# =============================================================================
+
+def correr(args, semilla):
+    """Corre el AG sobre args.instancia con los parámetros de `args` y la
+    semilla dada; devuelve el dict de resultado del algoritmo."""
+    ag = AlgoritmoGeneticoAG(
+        tam_poblacion=args.tam_poblacion,
+        prob_cruce=args.prob_cruce,
+        prob_mut_os=args.prob_mut_os,
+        prob_mut_ms=args.prob_mut_ms,
+        k_torneo=args.k_torneo,
+        elitismo=args.elitismo,
+        estancamiento_max=args.estancamiento_max,
+        frac_inmigrantes=args.frac_inmigrantes,
+        semilla=semilla,
+    )
+    return ag.resolver(leer_instancia(args.instancia), max_generaciones=args.generaciones,
+                       tiempo_limite_s=args.tiempo_limite)
+
 
 # =============================================================================
 # LÍNEA DE COMANDOS
@@ -132,6 +205,9 @@ def main():
     ap.add_argument("--elitismo", type=int, default=2)
     ap.add_argument("--estancamiento-max", type=int, default=15)
     ap.add_argument("--frac-inmigrantes", type=float, default=0.15)
+    ap.add_argument("--corridas", type=int, default=10,
+                     help="Corridas independientes (semillas semilla, semilla+1000, ...) para "
+                          "la caja y bigote g2.png. La primera es la corrida principal.")
     ap.add_argument("--parametros-json", default=None,
                      help="Ruta a un JSON con parámetros (p.ej. la salida de una calibración con Optuna). "
                           "Sobrescribe los valores por defecto; un flag explícito en la línea de comandos "
@@ -153,19 +229,18 @@ def main():
 
     instancia = leer_instancia(args.instancia)
 
-    ag = AlgoritmoGeneticoAG(
-        tam_poblacion=args.tam_poblacion,
-        prob_cruce=args.prob_cruce,
-        prob_mut_os=args.prob_mut_os,
-        prob_mut_ms=args.prob_mut_ms,
-        k_torneo=args.k_torneo,
-        elitismo=args.elitismo,
-        estancamiento_max=args.estancamiento_max,
-        frac_inmigrantes=args.frac_inmigrantes,
-        semilla=args.semilla,
-    )
-    resultado = ag.resolver(instancia, max_generaciones=args.generaciones,
-                             tiempo_limite_s=args.tiempo_limite)
+    # Corrida principal (la de Salida/, convergencia y tiempos): sola, para
+    # que su tiempo no se mezcle con las corridas en paralelo
+    resultado = correr(args, args.semilla)
+
+    # Corridas adicionales para la caja y bigote: semillas semilla + 1000*k
+    semillas = [args.semilla + 1000 * k for k in range(args.corridas)]
+    makespans = {args.semilla: resultado["makespan"]}
+    if len(semillas) > 1:
+        with ProcessPoolExecutor() as ejecutor:
+            otros = ejecutor.map(correr, [args] * (len(semillas) - 1), semillas[1:])
+            for semilla, res in zip(semillas[1:], otros):
+                makespans[semilla] = res["makespan"]
 
     marca_tiempo = datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
     base_salida = args.out or os.path.join(os.path.dirname(__file__), "..", "Salida")
@@ -184,10 +259,14 @@ def main():
         "tiempo_limite_s": args.tiempo_limite,
     }
     escribir_salida(directorio, instancia, args.instancia, resultado, parametros, args.semilla)
+    escribir_caja(directorio, instancia, makespans, "AG_IA")
 
     print(f"Makespan final: {resultado['makespan']}")
     print(f"Generaciones corridas: {resultado['generaciones']}")
     print(f"Tiempo total: {resultado['tiempo_s']} s")
+    if len(makespans) > 1:
+        print(f"Makespan en {len(makespans)} corridas: min {min(makespans.values())}, "
+              f"max {max(makespans.values())}")
     print(f"Salida escrita en: {directorio}")
 
 

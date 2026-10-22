@@ -1,5 +1,5 @@
 {
-  "gap_promedio_calibracion_pct": 27.615820224241784,
+  "gap_promedio_calibracion_pct": 7.435588024396999,
   "instancias_calibracion": [
     "ft06_edata",
     "la01_edata",
@@ -18,8 +18,12 @@
   ],
   "generaciones_por_trial": 60,
   "n_trials": 100,
-  "tam_poblacion": 150,
-  "prob_cruce": 0.9171184329931649,
-  "prob_mutacion": 0.28183215786911114,
-  "tournsize": 5
+  "tam_poblacion": 140,
+  "prob_cruce": 0.8864719209760815,
+  "prob_mut_os": 0.22255828103770692,
+  "prob_mut_ms": 0.123737759017434,
+  "k_torneo": 2,
+  "elitismo": 4,
+  "estancamiento_max": 21,
+  "frac_inmigrantes": 0.12762387483398513
 }

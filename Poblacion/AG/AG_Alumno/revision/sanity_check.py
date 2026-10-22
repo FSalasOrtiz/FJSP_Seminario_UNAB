@@ -1,16 +1,18 @@
 """
 Poblacion/AG/AG_Alumno/revision/sanity_check.py
 =================================================
-Punto de entrada ejecutable de AG_Alumno: corre resolver() (algorithm.py)
-sobre una instancia y escribe el contrato de salida completo en
-../Salida/, con el MISMO formato de 7 archivos que usa AG_IA — para que
-ambas implementaciones se puedan comparar sin conocer el código interno
-de la otra.
+Punto de entrada ejecutable de AG_Alumno: corre resolver() sobre una
+instancia y escribe el contrato de salida completo en ../Salida/.
 
-Adaptado a la API real de este algoritmo (DEAP, cromosoma único, sin
-separar OS/MS, sin inmigrantes ni elitismo explícito más allá del
-HallOfFame) — no es una copia de AG_IA/revision/sanity_check.py, que
-importaba nombres (AlgoritmoGeneticoAG, leer_instancia) que no existen acá.
+Idéntico a ../../AG_IA/revision/sanity_check.py (mismos argumentos, valores
+por defecto y formato de salida); solo cambian la llamada al algoritmo y
+representacion1.txt, que refleja la codificación interna de cada uno.
+
+Autocontenido, igual que algorithm.py: la escritura de Salida/ AQUÍ es una
+copia local, no una llamada a core/salida_writer.py — ese módulo vive en
+core/ y está pensado para las metaheurísticas del experimento principal
+(que sí comparten núcleo). Reusarlo desde acá rompería la independencia que
+es la base de la comparación IA vs. Alumno.
 
 Uso:
     python sanity_check.py <ruta_instancia.fjs> [opciones]
@@ -21,6 +23,7 @@ Ver --help para todas las opciones.
 
 import argparse
 import csv
+from concurrent.futures import ProcessPoolExecutor
 import json
 import os
 import platform
@@ -29,6 +32,13 @@ from datetime import datetime
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from algorithm import resolver  # noqa: E402
+
+
+class Instancia:
+    """Solo el nombre del archivo, que es lo que usa escribir_salida()."""
+
+    def __init__(self, nombre):
+        self.nombre = nombre
 
 
 # =============================================================================
@@ -47,10 +57,10 @@ def detectar_hardware():
 
 
 # =============================================================================
-# ESCRITURA DE SALIDA — mismo contrato de 7 archivos que AG_IA
+# ESCRITURA DE SALIDA — contrato definido en experimento_humano_ia/README.md
 # =============================================================================
 
-def escribir_salida(directorio, nombre_instancia, ruta_instancia_original, resultado, parametros, semilla):
+def escribir_salida(directorio, instancia, ruta_instancia_original, resultado, parametros, semilla):
     os.makedirs(directorio, exist_ok=True)
 
     # forma1.txt — copia exacta de la instancia usada
@@ -67,26 +77,23 @@ def escribir_salida(directorio, nombre_instancia, ruta_instancia_original, resul
         for clave, valor in parametros.items():
             f.write(f"{clave}: {valor}\n")
 
-    # salida1.txt — solución final, mismo formato que AG_IA
-    # (nota: las máquinas acá quedan en base 1, tal como las lee load_fjs;
-    # AG_IA las convierte a base 0 al leer — diferencia de implementación,
-    # no un error de ninguna de las dos)
+    # salida1.txt — solución final, formato simple y documentado
     with open(os.path.join(directorio, "salida1.txt"), "w") as f:
-        f.write(f"instancia: {nombre_instancia}\n")
+        f.write(f"instancia: {instancia.nombre}\n")
         f.write(f"makespan: {resultado['makespan']}\n")
         f.write("# horario: trabajo operacion maquina inicio fin\n")
-        horario_ordenado = sorted(resultado["horario"], key=lambda op: op["start"])
-        for op in horario_ordenado:
-            f.write(f"{op['job']} {op['operation']} {op['machine']} {op['start']} {op['finish']}\n")
+        # las máquinas se escriben en base 0, como en AG_IA (load_fjs las lee en base 1)
+        for op in sorted(resultado["horario"], key=lambda x: x["start"]):
+            f.write(f"{op['job']} {op['operation']} {op['machine'] - 1} {op['start']} {op['finish']}\n")
 
-    # representacion1.txt — codificación interna (cromosoma único, no OS/MS)
+    # representacion1.txt — codificación interna (cromosoma)
     with open(os.path.join(directorio, "representacion1.txt"), "w") as f:
-        f.write("# codificación: gene = operation_id * MAX_ALTERNATIVES + alternativa\n")
+        f.write("# gen = operation_id * MAX_ALTERNATIVES + alternativa\n")
         f.write("CROMOSOMA: " + " ".join(str(x) for x in resultado["individuo"]) + "\n")
 
-    # tiempos.txt
+    # tiempos.txt — separado de salida1.txt (acta, punto 6)
     with open(os.path.join(directorio, "tiempos.txt"), "w") as f:
-        f.write(f"tiempo_total_s: {resultado['tiempo_s']}\n")
+        f.write(f"tiempo_total_s: {round(resultado['tiempo_s'], 4)}\n")
         f.write(f"generaciones: {resultado['generaciones']}\n")
 
     # hardware.txt
@@ -99,7 +106,7 @@ def escribir_salida(directorio, nombre_instancia, ruta_instancia_original, resul
         w = csv.writer(f)
         w.writerow(["tiempo_s", "mejor_makespan"])
         for t, mk in resultado["traza"]:
-            w.writerow([t, mk])
+            w.writerow([round(t, 4), int(mk)])
 
     try:
         import matplotlib
@@ -111,12 +118,85 @@ def escribir_salida(directorio, nombre_instancia, ruta_instancia_original, resul
         plt.step(tiempos, makespans, where="post")
         plt.xlabel("Tiempo (s)")
         plt.ylabel("Mejor makespan")
-        plt.title(f"Convergencia — AG_Alumno — {nombre_instancia}")
+        plt.title(f"Convergencia — AG_Alumno — {instancia.nombre}")
         plt.tight_layout()
         plt.savefig(os.path.join(directorio, "g1.png"), dpi=120)
         plt.close()
     except ImportError:
         pass  # matplotlib no disponible: el CSV ya queda igual disponible
+
+# =============================================================================
+# CAJA Y BIGOTE — makespan final de varias corridas independientes
+# =============================================================================
+
+def cargar_bks(nombre_instancia):
+    """Upper bound de la instancia según ../Entrada/bks.json (None si no está)."""
+    ruta = os.path.join(os.path.dirname(__file__), "..", "Entrada", "bks.json")
+    try:
+        with open(ruta) as f:
+            bks = json.load(f)
+    except OSError:
+        return None
+    clave = os.path.splitext(nombre_instancia)[0]
+    return bks.get(clave, {}).get("upper_bound")
+
+
+def escribir_caja(directorio, instancia, makespans, implementacion):
+    """g2.csv + g2.png: distribución del makespan final en las corridas
+    independientes (una por semilla)."""
+    with open(os.path.join(directorio, "g2.csv"), "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["semilla", "makespan"])
+        for semilla, mk in makespans.items():
+            w.writerow([semilla, mk])
+
+    if len(makespans) < 2:
+        return
+
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+        valores = list(makespans.values())
+        bks = cargar_bks(instancia.nombre)
+        plt.figure(figsize=(4, 5))
+        plt.boxplot(valores, widths=0.5, showmeans=True)
+        plt.scatter([1 + 0.06 * ((i % 5) - 2) for i in range(len(valores))], valores,
+                    s=14, alpha=0.6, zorder=3)
+        if bks is not None:
+            plt.axhline(bks, linestyle="--", linewidth=1, label=f"BKS = {bks}")
+            plt.legend(loc="best")
+        plt.xticks([1], [f"{len(valores)} corridas"])
+        plt.ylabel("Makespan final")
+        plt.title(f"Caja y bigote — {implementacion}\n{instancia.nombre}")
+        plt.tight_layout()
+        plt.savefig(os.path.join(directorio, "g2.png"), dpi=120)
+        plt.close()
+    except ImportError:
+        pass  # matplotlib no disponible: el CSV ya queda igual disponible
+
+
+# =============================================================================
+# CORRIDA — única parte que depende de la implementación
+# =============================================================================
+
+def correr(args, semilla):
+    """Corre el AG sobre args.instancia con los parámetros de `args` y la
+    semilla dada; devuelve el dict de resultado del algoritmo."""
+    return resolver(
+        args.instancia,
+        tam_poblacion=args.tam_poblacion,
+        prob_cruce=args.prob_cruce,
+        prob_mut_os=args.prob_mut_os,
+        prob_mut_ms=args.prob_mut_ms,
+        k_torneo=args.k_torneo,
+        elitismo=args.elitismo,
+        estancamiento_max=args.estancamiento_max,
+        frac_inmigrantes=args.frac_inmigrantes,
+        max_generaciones=args.generaciones,
+        tiempo_limite_s=args.tiempo_limite,
+        semilla=semilla,
+    )
 
 
 # =============================================================================
@@ -127,13 +207,20 @@ def main():
     ap = argparse.ArgumentParser(description="AG_Alumno — corrida de revisión / generación de Salida/.")
     ap.add_argument("instancia", help="Ruta al archivo de instancia (.fjs)")
     ap.add_argument("--semilla", type=int, default=1000)
-    ap.add_argument("--generaciones", type=int, default=100)
+    ap.add_argument("--generaciones", type=int, default=200)
     ap.add_argument("--tiempo-limite", type=float, default=None,
                      help="Límite de tiempo en segundos (opcional, además del límite de generaciones)")
-    ap.add_argument("--tam-poblacion", type=int, default=50)
-    ap.add_argument("--prob-cruce", type=float, default=0.3)
-    ap.add_argument("--prob-mutacion", type=float, default=0.2)
-    ap.add_argument("--tournsize", type=int, default=5)
+    ap.add_argument("--tam-poblacion", type=int, default=60)
+    ap.add_argument("--prob-cruce", type=float, default=0.9)
+    ap.add_argument("--prob-mut-os", type=float, default=0.2)
+    ap.add_argument("--prob-mut-ms", type=float, default=0.3)
+    ap.add_argument("--k-torneo", type=int, default=3)
+    ap.add_argument("--elitismo", type=int, default=2)
+    ap.add_argument("--estancamiento-max", type=int, default=15)
+    ap.add_argument("--frac-inmigrantes", type=float, default=0.15)
+    ap.add_argument("--corridas", type=int, default=10,
+                     help="Corridas independientes (semillas semilla, semilla+1000, ...) para "
+                          "la caja y bigote g2.png. La primera es la corrida principal.")
     ap.add_argument("--parametros-json", default=None,
                      help="Ruta a un JSON con parámetros (p.ej. la salida de una calibración con Optuna). "
                           "Sobrescribe los valores por defecto; un flag explícito en la línea de comandos "
@@ -143,26 +230,30 @@ def main():
     args = ap.parse_args()
 
     valores_por_defecto = {
-        "tam_poblacion": 50, "prob_cruce": 0.3, "prob_mutacion": 0.2, "tournsize": 5,
+        "tam_poblacion": 60, "prob_cruce": 0.9, "prob_mut_os": 0.2, "prob_mut_ms": 0.3,
+        "k_torneo": 3, "elitismo": 2, "estancamiento_max": 15, "frac_inmigrantes": 0.15,
     }
     if args.parametros_json:
         with open(args.parametros_json) as f:
             desde_json = json.load(f)
         for clave, valor in desde_json.items():
-            clave_attr = clave  # los nombres del JSON ya coinciden con los atributos de argparse
-            if clave_attr in valores_por_defecto and getattr(args, clave_attr, None) == valores_por_defecto[clave_attr]:
-                setattr(args, clave_attr, valor)
+            if clave in valores_por_defecto and getattr(args, clave) == valores_por_defecto[clave]:
+                setattr(args, clave, valor)
 
-    resultado = resolver(
-        args.instancia,
-        tam_poblacion=args.tam_poblacion,
-        prob_cruce=args.prob_cruce,
-        prob_mutacion=args.prob_mutacion,
-        tournsize=args.tournsize,
-        max_generaciones=args.generaciones,
-        tiempo_limite_s=args.tiempo_limite,
-        semilla=args.semilla,
-    )
+    instancia = Instancia(os.path.basename(args.instancia))
+
+    # Corrida principal (la de Salida/, convergencia y tiempos): sola, para
+    # que su tiempo no se mezcle con las corridas en paralelo
+    resultado = correr(args, args.semilla)
+
+    # Corridas adicionales para la caja y bigote: semillas semilla + 1000*k
+    semillas = [args.semilla + 1000 * k for k in range(args.corridas)]
+    makespans = {args.semilla: resultado["makespan"]}
+    if len(semillas) > 1:
+        with ProcessPoolExecutor() as ejecutor:
+            otros = ejecutor.map(correr, [args] * (len(semillas) - 1), semillas[1:])
+            for semilla, res in zip(semillas[1:], otros):
+                makespans[semilla] = res["makespan"]
 
     marca_tiempo = datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
     base_salida = args.out or os.path.join(os.path.dirname(__file__), "..", "Salida")
@@ -171,17 +262,24 @@ def main():
     parametros = {
         "tam_poblacion": args.tam_poblacion,
         "prob_cruce": args.prob_cruce,
-        "prob_mutacion": args.prob_mutacion,
-        "tournsize": args.tournsize,
+        "prob_mut_os": args.prob_mut_os,
+        "prob_mut_ms": args.prob_mut_ms,
+        "k_torneo": args.k_torneo,
+        "elitismo": args.elitismo,
+        "estancamiento_max": args.estancamiento_max,
+        "frac_inmigrantes": args.frac_inmigrantes,
         "max_generaciones": args.generaciones,
         "tiempo_limite_s": args.tiempo_limite,
     }
-    nombre_instancia = os.path.splitext(os.path.basename(args.instancia))[0]
-    escribir_salida(directorio, nombre_instancia, args.instancia, resultado, parametros, args.semilla)
+    escribir_salida(directorio, instancia, args.instancia, resultado, parametros, args.semilla)
+    escribir_caja(directorio, instancia, makespans, "AG_Alumno")
 
     print(f"Makespan final: {resultado['makespan']}")
     print(f"Generaciones corridas: {resultado['generaciones']}")
-    print(f"Tiempo total: {resultado['tiempo_s']} s")
+    print(f"Tiempo total: {round(resultado['tiempo_s'], 4)} s")
+    if len(makespans) > 1:
+        print(f"Makespan en {len(makespans)} corridas: min {min(makespans.values())}, "
+              f"max {max(makespans.values())}")
     print(f"Salida escrita en: {directorio}")
 
 

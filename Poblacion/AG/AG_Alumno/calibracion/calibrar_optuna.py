@@ -1,33 +1,58 @@
 """
 Poblacion/AG/AG_Alumno/calibracion/calibrar_optuna.py
 =======================================================
-Calibra los hiperparámetros de algorithm.resolver() (AG_Alumno) con
-Optuna. Es la contraparte de ../../AG_IA/calibracion/calibrar_optuna.py —
-misma metodología (mismas 10 instancias de calibración, mismas 2 semillas,
-mismo presupuesto de 60 generaciones por corrida dentro de un trial, mismo
-número de trials por defecto) para que ambas implementaciones se calibren
-en igualdad de condiciones y la comparación final no esté sesgada por
-haberle dado más esfuerzo de tuning a una que a la otra.
+Calibra los hiperparámetros de resolver() (algorithm.py) con
+Optuna, buscando en los rangos sugeridos en ../params.yaml.
 
-Diferencia con AG_IA: acá se calibran los 4 hiperparámetros que realmente
-expone este algoritmo (tam_poblacion, prob_cruce, prob_mutacion,
-tournsize) — no se inventan k_torneo/elitismo/estancamiento_max/
-frac_inmigrantes porque esos mecanismos no existen en este diseño (no hay
-inmigrantes aleatorios, ni elitismo explícito más allá del HallOfFame de
-DEAP).
+Por qué un subconjunto de instancias y no las 297
+---------------------------------------------------
+Cada trial de Optuna corre el AG entero sobre cada instancia de
+calibración y cada semilla. Correr las 297 instancias por trial haría
+que incluso 30 trials tardaran horas. En su lugar se usa un subconjunto
+fijo (INSTANCIAS_CALIBRACION) elegido a mano para cubrir la variedad real
+del benchmark: distintas familias (Brandimarte, Hurink, Dauzère-Pérès) y
+distintos tamaños (6x6 hasta 30x15). Los parámetros encontrados así
+generalizan razonablemente al resto porque el comportamiento del AG
+depende sobre todo del tamaño/dificultad relativa, no de la instancia
+puntual.
+
+Qué mide cada trial
+--------------------
+Para cada combinación (instancia, semilla): gap %% = 100 * (makespan -
+upper_bound) / upper_bound, usando las cotas congeladas en
+../Entrada/bks.json. El objetivo a minimizar es el promedio de esos gaps.
+Se usa gap normalizado (no makespan crudo) porque las instancias tienen
+escalas de makespan muy distintas (decenas vs. miles) y promediar
+makespan crudo dejaría que las instancias grandes dominen el objetivo.
+
+Presupuesto por trial: menos generaciones que una corrida "oficial" (ver
+--generaciones, default 60 contra 200 en revision/sanity_check.py) — es
+un proxy más rápido de qué tan buena es una combinación de parámetros,
+no una corrida final.
 
 Uso
 ---
     python calibrar_optuna.py                      # 100 trials (pedido del profesor guía)
     python calibrar_optuna.py --n-trials 100
+    python calibrar_optuna.py --instancias mk01,mk15,la01_edata
 
-El estudio se persiste en calibracion.db (sqlite) — retomable si se corta.
-Al terminar escribe mejores_parametros.json, compatible con
---parametros-json de ../revision/sanity_check.py.
+El estudio se persiste en calibracion.db (sqlite) — si se corta a la
+mitad, correr de nuevo el mismo comando retoma los trials ya hechos en
+vez de perderlos.
+
+Al terminar escribe mejores_parametros.json, listo para pasarle a
+revision/sanity_check.py con --parametros-json.
+
+Este script es idéntico al de ../../AG_IA/calibracion/ (mismas
+instancias, semillas, rangos, presupuesto, sampler y objetivo); lo único
+que cambia es la función correr(), que llama a la implementación de cada
+uno. Las corridas de cada trial se reparten en procesos paralelos (no
+cambia el resultado: cada corrida tiene su semilla fija).
 """
 
 import argparse
 import json
+from concurrent.futures import ProcessPoolExecutor
 import os
 import statistics
 import sys
@@ -42,33 +67,32 @@ INSTANCES_DIR = os.path.join(BASE, "Entrada", "instances")
 BKS_PATH = os.path.join(BASE, "Entrada", "bks.json")
 AQUI = os.path.dirname(os.path.abspath(__file__))
 
-# Mismo subconjunto que AG_IA/calibracion/calibrar_optuna.py — necesario
-# para que la comparación final sea justa (ver docstring del módulo).
+# Subconjunto de calibración: cubre las 3 familias del benchmark y tamaños
+# desde 6x6 hasta 30x15 (ver PROCEDENCIA.md para el origen de cada familia).
 INSTANCIAS_CALIBRACION = [
-    "ft06_edata",
-    "la01_edata",
-    "la21_edata",
-    "mk01",
-    "mk07",
-    "mk10",
-    "mk15",
-    "abz7_edata",
-    "dpp01a",
-    "dpp10a",
+    "ft06_edata",   # Brandimarte/clásica, 6x6 — piso del rango de tamaño
+    "la01_edata",   # Hurink, 10x5, chica
+    "la21_edata",   # Hurink, 15x10, mediana
+    "mk01",         # Brandimarte, 10x6
+    "mk07",         # Brandimarte, 20x5
+    "mk10",         # Brandimarte, 20x15, alta flexibilidad
+    "mk15",         # Brandimarte, 30x15 — techo del rango de tamaño
+    "abz7_edata",   # Hurink, 20x15, difícil
+    "dpp01a",       # Dauzère-Pérès
+    "dpp10a",       # Dauzère-Pérès, otro punto de la familia
 ]
 
 SEMILLAS_CALIBRACION = [1000, 2000]
 
-# Rangos propios de este algoritmo (distinto set de hiperparámetros que
-# AG_IA). tam_poblacion usa el mismo rango que AG_IA a propósito, para no
-# darle de entrada más margen de población a una implementación que a la
-# otra; prob_cruce/prob_mutacion/tournsize son los únicos otros knobs que
-# expone este diseño (ver algorithm.py, sección 8-9).
 RANGOS = {
     "tam_poblacion": ("int", 40, 150),
-    "prob_cruce": ("float", 0.2, 0.95),
-    "prob_mutacion": ("float", 0.05, 0.5),
-    "tournsize": ("int", 2, 7),
+    "prob_cruce": ("float", 0.7, 0.95),
+    "prob_mut_os": ("float", 0.1, 0.4),
+    "prob_mut_ms": ("float", 0.1, 0.5),
+    "k_torneo": ("int", 2, 5),
+    "elitismo": ("int", 1, 5),
+    "estancamiento_max": ("int", 8, 40),
+    "frac_inmigrantes": ("float", 0.1, 0.3),
 }
 
 
@@ -77,9 +101,20 @@ def cargar_bks():
         return json.load(f)
 
 
-def construir_objetivo(nombres, bks, semillas, generaciones):
-    rutas = {n: os.path.join(INSTANCES_DIR, n + ".fjs") for n in nombres}
+def correr(ruta, semilla, params, generaciones):
+    """Única parte que depende de la implementación: corre el AG sobre
+    `ruta` y devuelve el makespan obtenido."""
+    resultado = resolver(ruta, semilla=semilla, max_generaciones=generaciones, **params)
+    return resultado["makespan"]
 
+
+def _gap(tarea):
+    ruta, semilla, params, generaciones, ub = tarea
+    makespan = correr(ruta, semilla, params, generaciones)
+    return 100.0 * (makespan - ub) / ub
+
+
+def construir_objetivo(nombres, bks, semillas, generaciones, ejecutor):
     def objetivo(trial):
         params = {}
         for clave, (tipo, lo, hi) in RANGOS.items():
@@ -88,21 +123,13 @@ def construir_objetivo(nombres, bks, semillas, generaciones):
             else:
                 params[clave] = trial.suggest_float(clave, lo, hi)
 
-        gaps = []
-        for nombre, ruta in rutas.items():
-            ub = bks[nombre]["upper_bound"]
-            for semilla in semillas:
-                resultado = resolver(
-                    ruta,
-                    tam_poblacion=params["tam_poblacion"],
-                    prob_cruce=params["prob_cruce"],
-                    prob_mutacion=params["prob_mutacion"],
-                    tournsize=params["tournsize"],
-                    max_generaciones=generaciones,
-                    semilla=semilla,
-                )
-                gap = 100.0 * (resultado["makespan"] - ub) / ub
-                gaps.append(gap)
+        tareas = [
+            (os.path.join(INSTANCES_DIR, nombre + ".fjs"), semilla, params,
+             generaciones, bks[nombre]["upper_bound"])
+            for nombre in nombres
+            for semilla in semillas
+        ]
+        gaps = list(ejecutor.map(_gap, tareas))
 
         return statistics.mean(gaps)
 
@@ -112,11 +139,19 @@ def construir_objetivo(nombres, bks, semillas, generaciones):
 def main():
     ap = argparse.ArgumentParser(description="Calibración de AG_Alumno con Optuna.")
     ap.add_argument("--n-trials", type=int, default=100)
-    ap.add_argument("--generaciones", type=int, default=60)
-    ap.add_argument("--instancias", default=None)
-    ap.add_argument("--semillas", default=None)
-    ap.add_argument("--storage", default=f"sqlite:///{os.path.join(AQUI, 'calibracion.db')}")
+    ap.add_argument("--generaciones", type=int, default=60,
+                     help="Presupuesto de generaciones por corrida DENTRO de un trial "
+                          "(menor que el default de sanity_check.py a propósito: es un proxy rápido).")
+    ap.add_argument("--instancias", default=None,
+                     help="Lista separada por comas (sin extensión), p.ej. mk01,mk15. "
+                          "Por defecto usa el subconjunto curado del script.")
+    ap.add_argument("--semillas", default=None,
+                     help="Lista separada por comas, p.ej. 1000,2000,3000.")
+    ap.add_argument("--storage", default=f"sqlite:///{os.path.join(AQUI, 'calibracion.db')}",
+                     help="Storage de Optuna (permite retomar si se corta). Pasar '' para no persistir.")
     ap.add_argument("--study-name", default="ag_alumno_fjsp")
+    ap.add_argument("--procesos", type=int, default=min(20, os.cpu_count() or 1),
+                     help="Procesos en paralelo para las corridas de cada trial.")
     args = ap.parse_args()
 
     nombres = args.instancias.split(",") if args.instancias else INSTANCIAS_CALIBRACION
@@ -131,7 +166,8 @@ def main():
     print(f"Semillas: {semillas} | generaciones/trial: {args.generaciones} | trials: {args.n_trials}")
     print(f"Corridas por trial: {len(nombres) * len(semillas)}")
 
-    objetivo = construir_objetivo(nombres, bks, semillas, args.generaciones)
+    ejecutor = ProcessPoolExecutor(args.procesos)
+    objetivo = construir_objetivo(nombres, bks, semillas, args.generaciones, ejecutor)
 
     study = optuna.create_study(
         study_name=args.study_name,

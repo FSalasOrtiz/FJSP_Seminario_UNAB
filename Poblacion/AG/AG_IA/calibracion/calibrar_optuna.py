@@ -42,10 +42,17 @@ vez de perderlos.
 
 Al terminar escribe mejores_parametros.json, listo para pasarle a
 revision/sanity_check.py con --parametros-json.
+
+Este script es idéntico al de ../../AG_Alumno/calibracion/ (mismas
+instancias, semillas, rangos, presupuesto, sampler y objetivo); lo único
+que cambia es la función correr(), que llama a la implementación de cada
+uno. Las corridas de cada trial se reparten en procesos paralelos (no
+cambia el resultado: cada corrida tiene su semilla fija).
 """
 
 import argparse
 import json
+from concurrent.futures import ProcessPoolExecutor
 import os
 import statistics
 import sys
@@ -94,15 +101,21 @@ def cargar_bks():
         return json.load(f)
 
 
-def cargar_instancias(nombres):
-    instancias = {}
-    for nombre in nombres:
-        ruta = os.path.join(INSTANCES_DIR, nombre + ".fjs")
-        instancias[nombre] = leer_instancia(ruta)
-    return instancias
+def correr(ruta, semilla, params, generaciones):
+    """Única parte que depende de la implementación: corre el AG sobre
+    `ruta` y devuelve el makespan obtenido."""
+    ag = AlgoritmoGeneticoAG(semilla=semilla, **params)
+    resultado = ag.resolver(leer_instancia(ruta), max_generaciones=generaciones)
+    return resultado["makespan"]
 
 
-def construir_objetivo(instancias, bks, semillas, generaciones):
+def _gap(tarea):
+    ruta, semilla, params, generaciones, ub = tarea
+    makespan = correr(ruta, semilla, params, generaciones)
+    return 100.0 * (makespan - ub) / ub
+
+
+def construir_objetivo(nombres, bks, semillas, generaciones, ejecutor):
     def objetivo(trial):
         params = {}
         for clave, (tipo, lo, hi) in RANGOS.items():
@@ -111,14 +124,13 @@ def construir_objetivo(instancias, bks, semillas, generaciones):
             else:
                 params[clave] = trial.suggest_float(clave, lo, hi)
 
-        gaps = []
-        for nombre, instancia in instancias.items():
-            ub = bks[nombre]["upper_bound"]
-            for semilla in semillas:
-                ag = AlgoritmoGeneticoAG(semilla=semilla, **params)
-                resultado = ag.resolver(instancia, max_generaciones=generaciones)
-                gap = 100.0 * (resultado["makespan"] - ub) / ub
-                gaps.append(gap)
+        tareas = [
+            (os.path.join(INSTANCES_DIR, nombre + ".fjs"), semilla, params,
+             generaciones, bks[nombre]["upper_bound"])
+            for nombre in nombres
+            for semilla in semillas
+        ]
+        gaps = list(ejecutor.map(_gap, tareas))
 
         return statistics.mean(gaps)
 
@@ -139,6 +151,8 @@ def main():
     ap.add_argument("--storage", default=f"sqlite:///{os.path.join(AQUI, 'calibracion.db')}",
                      help="Storage de Optuna (permite retomar si se corta). Pasar '' para no persistir.")
     ap.add_argument("--study-name", default="ag_ia_fjsp")
+    ap.add_argument("--procesos", type=int, default=min(20, os.cpu_count() or 1),
+                     help="Procesos en paralelo para las corridas de cada trial.")
     args = ap.parse_args()
 
     nombres = args.instancias.split(",") if args.instancias else INSTANCIAS_CALIBRACION
@@ -153,8 +167,8 @@ def main():
     print(f"Semillas: {semillas} | generaciones/trial: {args.generaciones} | trials: {args.n_trials}")
     print(f"Corridas por trial: {len(nombres) * len(semillas)}")
 
-    instancias = cargar_instancias(nombres)
-    objetivo = construir_objetivo(instancias, bks, semillas, args.generaciones)
+    ejecutor = ProcessPoolExecutor(args.procesos)
+    objetivo = construir_objetivo(nombres, bks, semillas, args.generaciones, ejecutor)
 
     study = optuna.create_study(
         study_name=args.study_name,

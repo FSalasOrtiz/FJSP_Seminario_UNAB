@@ -1,3 +1,4 @@
+import bisect
 import random
 import time
 from deap import base, creator, tools
@@ -11,6 +12,32 @@ from deap import base, creator, tools
 # final del archivo. Ninguna función del algoritmo en sí (load_fjs,
 # create_individual, repair_individual, decode_schedule,
 # objective_function, crossover, mutation) fue tocada.
+#
+# CORRECCIÓN (oct 2026, gap promedio < 5% exigido por el profesor): tras un
+# análisis de ablación se cambiaron estas piezas del algoritmo, manteniendo
+# el mismo cromosoma, DEAP y la misma API de resolver():
+#   1. decode_schedule: el cromosoma se lee como secuencia de trabajos (la
+#      k-ésima aparición del trabajo j programa su operación k), en una sola
+#      pasada, y el horario es ACTIVO (inserta en huecos libres). Cada
+#      operación va a la máquina donde TERMINA ANTES; ante empate, a la del
+#      gen. Antes era semi-activo, con la máquina fija del gen y barridos
+#      repetidos + búsqueda lineal (muy lento).
+#   2. crossover: POX (conserva el orden relativo de un subconjunto de
+#      trabajos) + mezcla uniforme de máquinas. Antes cxTwoPoint generaba
+#      duplicados y la reparación agregaba al final, con máquina aleatoria,
+#      las operaciones perdidas (destruía a los hijos).
+#   3. mutación: 1 intercambio de genes (con prob_mut_os) y 1 cambio de
+#      máquina (con prob_mut_ms). Antes indpb=0.05 por gen (~15 + ~15
+#      cambios en instancias de 300 operaciones).
+#   4. resolver: elitismo (los `elitismo` mejores de la generación anterior
+#      reemplazan a los peores hijos) e inmigrantes aleatorios cuando el
+#      mejor se estanca. Antes el mejor solo quedaba en el HallOfFame.
+#   5. Población inicial: la mitad con la máquina más rápida de cada
+#      operación y 5 individuos construidos por despacho (trabajo con más
+#      trabajo restante + máquina que termina antes).
+# Los hiperparámetros de resolver() tienen los mismos nombres, valores por
+# defecto y rangos de calibración que AG_IA, para que lo único distinto
+# entre ambas sea la implementación.
 
 INSTANCE_PATH = "instances/abz5_vdata.fjs"
 
@@ -182,6 +209,85 @@ def create_individual():
     return chromosome
 
 
+def fastest_machines(individual):
+
+    # Asigna a cada operación su alternativa de menor tiempo de proceso
+    for i, gene in enumerate(individual):
+
+        operation_id, _ = decode_gene(gene)
+
+        alternatives = operations[operation_id]["alternatives"]
+
+        fastest = min(
+            range(len(alternatives)),
+            key=lambda k: alternatives[k][1]
+        )
+
+        individual[i] = encode_gene(operation_id, fastest)
+
+
+def dispatch_individual(individual, noise):
+
+    # Construye el cromosoma con una regla de despacho: en cada paso se
+    # programa el trabajo con más trabajo restante (con un ruido relativo
+    # `noise` para variar entre individuos) en la máquina que termina antes
+    def min_time(operation_id):
+        return min(p for _, p in operations[operation_id]["alternatives"])
+
+    remaining = {
+        job_id: sum(min_time(o) for o in jobs[job_id])
+        for job_id in range(n_jobs)
+    }
+    next_operation = {job_id: 0 for job_id in range(n_jobs)}
+    job_finish = {job_id: 0 for job_id in range(n_jobs)}
+    machine_intervals = {
+        machine_id: []
+        for machine_id in range(1, n_machines + 1)
+    }
+
+    chromosome = []
+
+    for _ in range(N_OPERATIONS):
+
+        candidates = [
+            job_id for job_id in range(n_jobs)
+            if next_operation[job_id] < len(jobs[job_id])
+        ]
+
+        job = max(
+            candidates,
+            key=lambda j: remaining[j] * (1 + noise * random.random())
+        )
+
+        operation_id = jobs[job][next_operation[job]]
+
+        best = None
+
+        for k, (machine, processing_time) in enumerate(
+            operations[operation_id]["alternatives"]
+        ):
+
+            start = find_gap(
+                machine_intervals[machine],
+                job_finish[job],
+                processing_time
+            )
+
+            if best is None or start + processing_time < best[0]:
+                best = (start + processing_time, k, machine, start)
+
+        finish, alternative, machine, start = best
+
+        bisect.insort(machine_intervals[machine], (start, finish))
+        job_finish[job] = finish
+        next_operation[job] += 1
+        remaining[job] -= min_time(operation_id)
+
+        chromosome.append(encode_gene(operation_id, alternative))
+
+    individual[:] = chromosome
+
+
 # ============================================================
 # 4. REPARACIÓN DEL CROMOSOMA
 # ============================================================
@@ -244,31 +350,40 @@ def repair_individual(individual):
 # 5. DECODIFICACIÓN DEL CROMOSOMA
 # ============================================================
 
+def find_gap(intervals, release, processing_time):
+
+    # Primer instante >= release donde la operación cabe completa
+    # sin solaparse con lo ya programado en la máquina
+    start = release
+
+    for (busy_start, busy_finish) in intervals:
+
+        if start + processing_time <= busy_start:
+            return start
+
+        if start < busy_finish:
+            start = busy_finish
+
+    return start
+
+
 def decode_schedule(individual):
 
     individual = repair_individual(individual)
 
-    # Información de cada operación
-    operation_info = {}
+    # Alternativa (máquina) elegida para cada operación
+    alternative_of = {}
 
     for gene in individual:
 
         operation_id, alternative = decode_gene(gene)
+        alternative_of[operation_id] = alternative
 
-        operation = operations[operation_id]
-
-        machine, processing_time = \
-            operation["alternatives"][alternative]
-
-        operation_info[operation_id] = {
-            "job": operation["job"],
-            "operation": operation["operation"],
-            "machine": machine,
-            "processing_time": processing_time
-        }
-
-    # Operaciones pendientes
-    unscheduled = set(operation_info.keys())
+    # Intervalos ocupados de cada máquina, ordenados por inicio
+    machine_intervals = {
+        machine_id: []
+        for machine_id in range(1, n_machines + 1)
+    }
 
     # Fin de la última operación de cada trabajo
     job_finish = {
@@ -276,91 +391,73 @@ def decode_schedule(individual):
         for job_id in range(n_jobs)
     }
 
-    # Fin de la última operación de cada máquina
-    machine_finish = {
-        machine_id: 0
-        for machine_id in range(1, n_machines + 1)
+    # Próxima operación pendiente de cada trabajo
+    next_operation = {
+        job_id: 0
+        for job_id in range(n_jobs)
     }
 
     schedule = []
 
-    # Programar hasta que todas las operaciones estén listas
-    while unscheduled:
+    # El cromosoma se lee como secuencia de trabajos: la k-ésima vez que
+    # aparece un gen del trabajo j se programa la operación k de j.
+    # Así la precedencia se cumple siempre, en una sola pasada.
+    for gene in individual:
 
-        progress = False
+        gene_operation_id, _ = decode_gene(gene)
 
-        # Recorremos el cromosoma respetando su prioridad
-        for gene in individual:
+        job = operations[gene_operation_id]["job"]
+        operation_number = next_operation[job]
+        operation_id = jobs[job][operation_number]
 
-            operation_id, _ = decode_gene(gene)
+        alternatives = operations[operation_id]["alternatives"]
+        preferred = alternative_of[operation_id]
 
-            if operation_id not in unscheduled:
+        # Horario activo: en cada máquina se usa el primer hueco libre
+        # posterior al fin de la operación anterior del trabajo. Se parte
+        # de la máquina del gen y se cambia solo si otra termina antes.
+        machine, processing_time = alternatives[preferred]
+        start = find_gap(
+            machine_intervals[machine],
+            job_finish[job],
+            processing_time
+        )
+
+        for k, (other_machine, other_time) in enumerate(alternatives):
+
+            if k == preferred:
                 continue
 
-            info = operation_info[operation_id]
-
-            job = info["job"]
-            operation_number = info["operation"]
-            machine = info["machine"]
-            processing_time = info["processing_time"]
-
-            # Verificar precedencia
-            if operation_number > 0:
-
-                previous_operation_id = jobs[job][
-                    operation_number - 1
-                ]
-
-                previous_scheduled = next(
-                    (
-                        x for x in schedule
-                        if x["operation_id"] ==
-                        previous_operation_id
-                    ),
-                    None
-                )
-
-                if previous_scheduled is None:
-                    continue
-
-                previous_finish = previous_scheduled["finish"]
-
-            else:
-                previous_finish = 0
-
-            # La operación comienza cuando:
-            # 1. termina la operación anterior del trabajo
-            # 2. queda disponible la máquina
-            start = max(
-                previous_finish,
-                machine_finish[machine],
-                job_finish[job]
+            other_start = find_gap(
+                machine_intervals[other_machine],
+                job_finish[job],
+                other_time
             )
 
-            finish = start + processing_time
+            if other_start + other_time < start + processing_time:
+                machine = other_machine
+                processing_time = other_time
+                start = other_start
 
-            schedule.append({
-                "operation_id": operation_id,
-                "job": job,
-                "operation": operation_number,
-                "machine": machine,
-                "processing_time": processing_time,
-                "start": start,
-                "finish": finish
-            })
+        finish = start + processing_time
 
-            machine_finish[machine] = finish
-            job_finish[job] = finish
+        bisect.insort(
+            machine_intervals[machine],
+            (start, finish)
+        )
 
-            unscheduled.remove(operation_id)
+        schedule.append({
+            "operation_id": operation_id,
+            "job": job,
+            "operation": operation_number,
+            "machine": machine,
+            "processing_time": processing_time,
+            "start": start,
+            "finish": finish
+        })
 
-            progress = True
-
-        # Evita quedarse atrapado si existe un cromosoma inválido
-        if not progress:
-            raise ValueError(
-                "No fue posible decodificar el cromosoma."
-            )
+        job_finish[job] = finish
+        next_operation[job] += 1
 
     return schedule
 
@@ -385,63 +482,116 @@ def objective_function(individual):
 # 7. OPERADORES GENÉTICOS
 # ============================================================
 
-def crossover(parent1, parent2):
+def job_of(gene):
 
-    child1, child2 = tools.cxTwoPoint(
-        parent1,
-        parent2
-    )
+    operation_id, _ = decode_gene(gene)
 
-    child1[:] = repair_individual(child1)
-    child2[:] = repair_individual(child2)
-
-    return child1, child2
+    return operations[operation_id]["job"]
 
 
-def mutation(individual):
+def pox_crossover(parent1, parent2):
 
-    # Cambiar orden
-    if len(individual) > 1:
+    # POX: los genes de un subconjunto aleatorio de trabajos quedan en la
+    # misma posición que en parent1; los huecos se llenan con los genes de
+    # los demás trabajos en el orden en que aparecen en parent2
+    job_ids = list(range(n_jobs))
+    random.shuffle(job_ids)
 
-        tools.mutShuffleIndexes(
-            individual,
-            indpb=0.05
+    if n_jobs > 1:
+        cut = random.randint(1, n_jobs - 1)
+    else:
+        cut = 1
+
+    kept_jobs = set(job_ids[:cut])
+
+    rest = iter([
+        gene for gene in parent2
+        if job_of(gene) not in kept_jobs
+    ])
+
+    return [
+        gene if job_of(gene) in kept_jobs else next(rest)
+        for gene in parent1
+    ]
+
+
+def mix_machines(child, parent1, parent2):
+
+    # Cada operación hereda la máquina de uno de los padres al azar
+    alternatives1 = dict(decode_gene(gene) for gene in parent1)
+    alternatives2 = dict(decode_gene(gene) for gene in parent2)
+
+    mixed = []
+
+    for gene in child:
+
+        operation_id, _ = decode_gene(gene)
+
+        if random.random() < 0.5:
+            alternative = alternatives1[operation_id]
+        else:
+            alternative = alternatives2[operation_id]
+
+        mixed.append(
+            encode_gene(operation_id, alternative)
         )
 
-    # Cambiar máquina de algunas operaciones
-    for i in range(len(individual)):
+    return mixed
 
-        if random.random() < 0.05:
 
-            operation_id, current_alternative = \
-                decode_gene(individual[i])
+def crossover(parent1, parent2):
 
-            operation = operations[operation_id]
+    if len(parent1) < 2:
+        return parent1, parent2
 
-            n_alternatives = len(
-                operation["alternatives"]
-            )
+    p1 = list(parent1)
+    p2 = list(parent2)
 
-            if n_alternatives > 1:
+    parent1[:] = mix_machines(pox_crossover(p1, p2), p1, p2)
+    parent2[:] = mix_machines(pox_crossover(p2, p1), p1, p2)
 
-                possible = list(
-                    range(n_alternatives)
-                )
+    return parent1, parent2
 
-                possible.remove(
-                    current_alternative
-                )
 
-                new_alternative = random.choice(
-                    possible
-                )
+def mutate_order(individual):
 
-                individual[i] = encode_gene(
-                    operation_id,
-                    new_alternative
-                )
+    # Cambiar orden: intercambiar dos genes
+    if len(individual) > 1:
 
-    individual[:] = repair_individual(individual)
+        i = random.randrange(len(individual))
+        k = random.randrange(len(individual))
+
+        individual[i], individual[k] = individual[k], individual[i]
+
+    return individual,
+
+
+def mutate_machine(individual):
+
+    # Cambiar máquina de una operación
+    i = random.randrange(len(individual))
+
+    operation_id, current_alternative = \
+        decode_gene(individual[i])
+
+    n_alternatives = len(
+        operations[operation_id]["alternatives"]
+    )
+
+    if n_alternatives > 1:
+
+        possible = list(
+            range(n_alternatives)
+        )
+
+        possible.remove(
+            current_alternative
+        )
+
+        individual[i] = encode_gene(
+            operation_id,
+            random.choice(possible)
+        )
 
     return individual,
 
@@ -450,7 +600,7 @@ def mutation(individual):
 # 8. CONFIGURACIÓN DEL ALGORITMO GENÉTICO
 # ============================================================
 
-def _construir_toolbox(tournsize):
+def _construir_toolbox(k_torneo):
     """Registra creator/toolbox de DEAP. Separado en función (antes corría
     directo al importar) para poder reconstruir el toolbox por cada
     instancia/trial sin arrastrar estado de una corrida anterior."""
@@ -497,7 +647,7 @@ def _construir_toolbox(tournsize):
     toolbox.register(
         "select",
         tools.selTournament,
-        tournsize=tournsize
+        tournsize=k_torneo
     )
 
     # Cruce
@@ -506,10 +656,16 @@ def _construir_toolbox(tournsize):
         crossover
     )
 
-    # Mutación
+    # Mutación del orden
     toolbox.register(
-        "mutate",
-        mutation
+        "mutate_os",
+        mutate_order
+    )
+
+    # Mutación de máquina
+    toolbox.register(
+        "mutate_ms",
+        mutate_machine
     )
 
     return toolbox
@@ -522,11 +678,16 @@ def _construir_toolbox(tournsize):
 # resolver() en vez de constantes fijas — así se pueden barrer con Optuna
 # o pasar por CLI sin editar el archivo.
 
-POP_SIZE = 50
-CROSSOVER_PROB = 0.3
-MUTATION_PROB = 0.2
-GENERATIONS = 100
-TOURNSIZE = 5
+POP_SIZE = 60
+CROSSOVER_PROB = 0.9
+MUTATION_OS_PROB = 0.2
+MUTATION_MS_PROB = 0.3
+TOURNAMENT_SIZE = 3
+ELITISM = 2
+STAGNATION_MAX = 15
+IMMIGRANT_FRACTION = 0.15
+GENERATIONS = 200
+DISPATCH_INDIVIDUALS = 5
 
 
 # ============================================================
@@ -536,11 +697,14 @@ TOURNSIZE = 5
 # falta para g1.csv/g1.png, igual que en AG_IA), así que acá se reimplementa
 # su mismo bucle (selección -> cruce/mutación -> evaluación -> reemplazo,
 # ver la documentación de deap.algorithms.eaSimple) agregando solo el
-# cronómetro por generación. La secuencia de operadores y probabilidades es
-# idéntica a la del script original; no se cambió ninguna regla del AG.
+# cronómetro por generación y (corrección oct 2026) elitismo e inmigrantes
+# por estancamiento.
 
 def resolver(instance_path, tam_poblacion=POP_SIZE, prob_cruce=CROSSOVER_PROB,
-             prob_mutacion=MUTATION_PROB, tournsize=TOURNSIZE,
+             prob_mut_os=MUTATION_OS_PROB, prob_mut_ms=MUTATION_MS_PROB,
+             k_torneo=TOURNAMENT_SIZE, elitismo=ELITISM,
+             estancamiento_max=STAGNATION_MAX,
+             frac_inmigrantes=IMMIGRANT_FRACTION,
              max_generaciones=GENERATIONS, tiempo_limite_s=None, semilla=None):
     """Corre el AG sobre `instance_path` y devuelve el resultado.
 
@@ -552,11 +716,22 @@ def resolver(instance_path, tam_poblacion=POP_SIZE, prob_cruce=CROSSOVER_PROB,
         random.seed(semilla)
 
     _cargar_instancia(instance_path)
-    toolbox = _construir_toolbox(tournsize)
+    toolbox = _construir_toolbox(k_torneo)
 
     t0 = time.time()
 
     poblacion = toolbox.population(n=tam_poblacion)
+
+    # La mitad de la población parte con la máquina más rápida de cada
+    # operación (el orden sigue siendo aleatorio)
+    for ind in poblacion[: tam_poblacion // 2]:
+        fastest_machines(ind)
+
+    # Los últimos 5 individuos se construyen por despacho (el primero sin
+    # ruido, el resto con ruido para que no sean idénticos)
+    for h in range(min(DISPATCH_INDIVIDUALS, tam_poblacion)):
+        dispatch_individual(poblacion[-1 - h], noise=0.0 if h == 0 else 0.2)
+
     hall_of_fame = tools.HallOfFame(1)
 
     fitnesses = map(toolbox.evaluate, poblacion)
@@ -566,6 +741,7 @@ def resolver(instance_path, tam_poblacion=POP_SIZE, prob_cruce=CROSSOVER_PROB,
 
     traza = [(time.time() - t0, hall_of_fame[0].fitness.values[0])]
     generaciones_corridas = 0
+    estancamiento = 0
 
     for gen in range(1, max_generaciones + 1):
 
@@ -584,14 +760,57 @@ def resolver(instance_path, tam_poblacion=POP_SIZE, prob_cruce=CROSSOVER_PROB,
                 del descendencia[i].fitness.values
 
         for i in range(len(descendencia)):
-            if random.random() < prob_mutacion:
-                descendencia[i], = toolbox.mutate(descendencia[i])
+            mutado = False
+            if random.random() < prob_mut_os:
+                descendencia[i], = toolbox.mutate_os(descendencia[i])
+                mutado = True
+            if random.random() < prob_mut_ms:
+                descendencia[i], = toolbox.mutate_ms(descendencia[i])
+                mutado = True
+            if mutado:
                 del descendencia[i].fitness.values
 
         invalidos = [ind for ind in descendencia if not ind.fitness.valid]
         fitnesses = map(toolbox.evaluate, invalidos)
         for ind, fit in zip(invalidos, fitnesses):
             ind.fitness.values = fit
+
+        # Elitismo: los `elitismo` mejores de la generación anterior
+        # reemplazan a los peores hijos
+        elite = tools.selBest(poblacion, elitismo)
+        peores_hijos = sorted(
+            range(len(descendencia)),
+            key=lambda i: descendencia[i].fitness.values[0],
+            reverse=True
+        )[:elitismo]
+
+        for i, ind in zip(peores_hijos, elite):
+            descendencia[i] = toolbox.clone(ind)
+
+        # Inmigrantes: si el mejor no mejora en `estancamiento_max`
+        # generaciones, los peores hijos se reemplazan por individuos nuevos
+        mejor_previo = hall_of_fame[0].fitness.values[0]
+
+        if min(ind.fitness.values[0] for ind in descendencia) < mejor_previo:
+            estancamiento = 0
+        else:
+            estancamiento += 1
+
+        if estancamiento >= estancamiento_max:
+
+            n_inmigrantes = max(1, int(len(descendencia) * frac_inmigrantes))
+            peores = sorted(
+                range(len(descendencia)),
+                key=lambda i: descendencia[i].fitness.values[0],
+                reverse=True
+            )[:n_inmigrantes]
+
+            for i in peores:
+                inmigrante = toolbox.individual()
+                inmigrante.fitness.values = toolbox.evaluate(inmigrante)
+                descendencia[i] = inmigrante
+
+            estancamiento = 0
 
         hall_of_fame.update(descendencia)
         poblacion[:] = descendencia
